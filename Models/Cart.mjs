@@ -1,3 +1,4 @@
+import { Decimal128 } from "mongodb"
 import mongoose from "mongoose"
 
 const cartsSchema = new mongoose.Schema({
@@ -7,15 +8,15 @@ const cartsSchema = new mongoose.Schema({
   },
   
   chest: {
-    type: float,
+    type: Decimal128,
     required: true,
    },
    waist: {
-    type: float,
+    type: Decimal128,
     required: true,
    },
    hips: {
-    type: float,
+    type: Decimal128,
     required: true,
    },
    price: [{

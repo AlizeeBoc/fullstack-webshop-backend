@@ -15,10 +15,10 @@ try {
 }
 })
 
-router.get('/:productId', async (req, res) =>  {
+router.get('/:productRef', async (req, res) =>  {
     try {
-        const productId = req.params.productId    
-        const product = await Product.findById(productId)
+        const productRef = req.params.productRef   
+        const product = await Product.find({productRef})
         if(!product) {
             res.status(404).json({error : "Product not find"})
         }
