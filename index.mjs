@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 
+import indexRouter from "./routes/index.mjs"
+
 const username_mongo = process.env.username_mongo
 const password_mongo = process.env.mongo_password
 
@@ -16,8 +18,9 @@ console.log('MongoDB Atlas connected!');
 console.log(err);
 });
 
+app.use("/", indexRouter)
 
-app.listen(3000, () => console.log("Listen on port 3000"))
+app.listen(9000, () => console.log("Listen on port 9000"))
 
 
 
