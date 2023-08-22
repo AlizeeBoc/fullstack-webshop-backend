@@ -1,10 +1,10 @@
 import mongoose from "mongoose"
 
 const cartsSchema = new mongoose.Schema({
-  //playerId: {
-  //  type: String,
-  //  required: true,
-  //},
+  player_Id: {
+    type: String,
+    required: true,
+  },
   //name: {
   //  type: String,
   //  required: true,
