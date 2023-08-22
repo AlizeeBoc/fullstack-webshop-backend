@@ -3,13 +3,20 @@ const app = express()
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
+import bodyParser from "body-parser"
 
 import indexRouter from "./routes/index.mjs"
+
+
+app.use(express.json())
+app.use(bodyParser.urlencoded({ limit : '10mb', extended : false }))
+
+app.use("/", indexRouter)
 
 const username_mongo = process.env.username_mongo
 const password_mongo = process.env.mongo_password
 
-mongoose.connect(`mongodb+srv://${username_mongo}:${password_mongo}@eshop.yo4pqlj.mongodb.net/?retryWrites=true&w=majority`, {
+mongoose.connect(`mongodb+srv://${username_mongo}:${password_mongo}@eshop.yo4pqlj.mongodb.net/eshop?retryWrites=true&w=majority`, {
 useNewUrlParser: true,
 useUnifiedTopology: true
 }).then(() => {
@@ -18,7 +25,6 @@ console.log('MongoDB Atlas connected!');
 console.log(err);
 });
 
-app.use("/", indexRouter)
 
 app.listen(9000, () => console.log("Listen on port 9000"))
 

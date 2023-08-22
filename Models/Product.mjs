@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const productsSchema = new mongoose.Schema({
     reference: {
-     type: String,
+     type: Number,
      required: true,
     },
     description: {
@@ -17,7 +17,7 @@ const productsSchema = new mongoose.Schema({
     },
     image: {
       type: String,
-      required: true,
+      //required: true,
     }
   })
   
