@@ -18,18 +18,6 @@ const productsSchema = new mongoose.Schema({
       type: String,
       required: true,
     }
-    //overallRating: {
-    //  type: String,
-    //  required: true,
-    //},
-    //playerImg : {
-    //  type : String,
-    //  //required : true
-    //},
-    //clubImg : {
-    //  type : String,
-    //  //required : true
-    //},
   })
   
   const Product = mongoose.model("products", productsSchema)
