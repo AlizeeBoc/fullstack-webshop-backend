@@ -1,9 +1,10 @@
+######################### PRODUCTS ROUTES #########################
 
 ### GET all products // ok
 GET http://localhost:9000/products/
 
 ### GET a specific product based on its ref // ok
-GET http://localhost:9000/products/333
+GET http://localhost:9000/products/0
 
 
 ### CREATE a product //ok
@@ -11,14 +12,15 @@ Post http://localhost:9000/products/add-product
 Content-Type: application/json
 
 {
-    "reference": 1111,
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eget lacinia enim. Curabitur id est id velit aliquam sagittis in ac enim. Nullam et tellus urna. Fusce euismod purus eget quam aliquet, in ultricies nisl laoreet. Sed finibus libero vel odio malesuada, at varius ligula vestibulum.",
-    "price": 165.99
+    "reference": 1123,
+    "name": "Gloves Lorem Ipsum", 
+    "description": "Lorem ipsum",
+    "price": 65.99,
+    "image" : "https://i.pinimg.com/736x/9e/3f/5a/9e3f5a9ee345f387aaaff715faa11864.jpg"
 }
 
 ### DELETE a specific product based on its ref // ok
 DELETE http://localhost:9000/products/2000
-
 
 
 ### UPDATE a specific product 
@@ -29,3 +31,13 @@ Content-Type: application/json
     "name" : "XXX",
     "description" : "XXX"
 }
+
+######################### Carts ROUTES #########################
+
+### GET all carts
+http://localhost:9000/cart
+
+######################### Authorization ROUTES #########################
+
+### LOGIN Route
+GET http://localhost:9000/login
