@@ -31,11 +31,22 @@ router.get("/:productId", async (req, res) => {
 // Add a product
 router.post("/add-product", async (req, res) => {
   try {
+    const referenceExists = await Product.findOne({ reference: req.body.reference });
+    if (referenceExists) {
+      return res.status(400).send("Product with the same reference already exists");
+    }
+
+    const nameExists = await Product.findOne({ name: req.body.name });
+    if (nameExists) {
+      return res.status(400).send("Product with the same name already exists");
+    }
+
     const product = new Product({
       reference: req.body.reference,
+      name : req.body.name,
       description: req.body.description,
       price: req.body.price,
-      //image : filename
+      image : req.body.image
     })
 
     const newProduct = await product.save()
