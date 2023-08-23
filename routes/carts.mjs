@@ -4,7 +4,7 @@ import Cart from "../Models/Cart.mjs";
 
 const router = express.Router();
 
-router.get('/addtocart/:productReference', (req, res) => {
+router.post('/addtocart/:productReference', (req, res) => {
     const productReference = req.params.productReference
     const newCartItem = new Cart({
         product: productReference
@@ -14,7 +14,7 @@ router.get('/addtocart/:productReference', (req, res) => {
 })
 
 //access the cart
-router.get('/', (req, res) => {
+router.get('/cart/:cartId', (req, res) => {
     try {
         res.json('cart:')
     } catch (err) {
