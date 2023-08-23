@@ -1,0 +1,31 @@
+
+### GET all products // ok
+GET http://localhost:9000/products/
+
+### GET a specific product based on its ref // ok
+GET http://localhost:9000/products/333
+
+
+### CREATE a product //ok
+Post http://localhost:9000/products/add-product
+Content-Type: application/json
+
+{
+    "reference": 1111,
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eget lacinia enim. Curabitur id est id velit aliquam sagittis in ac enim. Nullam et tellus urna. Fusce euismod purus eget quam aliquet, in ultricies nisl laoreet. Sed finibus libero vel odio malesuada, at varius ligula vestibulum.",
+    "price": 165.99
+}
+
+### DELETE a specific product based on its ref // ok
+DELETE http://localhost:9000/products/2000
+
+
+
+### UPDATE a specific product 
+PATCH http://localhost:9000/products/333
+Content-Type: application/json
+
+{
+    "name" : "XXX",
+    "description" : "XXX"
+}
