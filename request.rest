@@ -5,13 +5,13 @@ GET http://localhost:9000/products/
 ### GET a product with its ref // ok
 GET http://localhost:9000/products/1000
 
-###
-### GET a product with its ref
+
+### CREATE a product
 Post http://localhost:9000/products/add-product
 Content-Type: application/json
 
 {
-    "reference": 2000,
+    "reference": 1111,
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eget lacinia enim. Curabitur id est id velit aliquam sagittis in ac enim. Nullam et tellus urna. Fusce euismod purus eget quam aliquet, in ultricies nisl laoreet. Sed finibus libero vel odio malesuada, at varius ligula vestibulum.",
     "price": 165.99
 }

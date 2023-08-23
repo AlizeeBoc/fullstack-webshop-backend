@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
 })
 
 // Get a specific product
-router.get("/:reference", async (req, res) => {
+router.get("/:productId", async (req, res) => {
   try {
     const reference = req.params.reference
     const product = await Product.find({ reference })
@@ -30,7 +30,6 @@ router.get("/:reference", async (req, res) => {
 
 // Add a product
 router.post("/add-product", async (req, res) => {
-  console.log("bonjour ")
   try {
     const product = new Product({
       reference: req.body.reference,
@@ -46,4 +45,8 @@ router.post("/add-product", async (req, res) => {
     res.status(500).send("Internal Server Error")
   }
 })
+
+// DELETE a product
+router.delete("/:productId", (req, res) => {})
+
 export default router
