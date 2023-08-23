@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 // Get a specific product
 router.get("/:productId", async (req, res) => {
   try {
-    const reference = req.params.reference
+    const reference = req.params.productId
     const product = await Product.find({ reference })
     if (!product) {
       res.status(404).json({ error: "Product not find" })
@@ -47,6 +47,45 @@ router.post("/add-product", async (req, res) => {
 })
 
 // DELETE a product
-router.delete("/:productId", (req, res) => {})
+router.delete("/:productId", async (req, res) => {
+  const productId = req.params.productId
+  try {
+    const removedProduct = await Product.deleteOne({ reference : productId})
+    if (removedProduct.deletedCount === 0) {
+      return res.status(404).json({error : 'Product not find'})
+    }
+    res.json({ message : 'Product deleted successfully'})
+  } catch (error) {
+    console.error('Error while deleting the product:', error)
+    res.status(500).json({error : 'Server error'})
+  }
+})
+
+//Update a product
+router.patch('/:productId', async(req, res) => {
+  const productId = req.params.productId
+  const updatedFields = req.body
+  ////const updatedFields = req.body
+  ////const productRef = req.body.reference
+  //const productName = req.body.name 
+  //const productDescription = req.body.description
+  ////const productPrice = req.body.price
+  ////const productPicture = req.body.pictureUrl
+  try {
+    const updatedProduct = await Product.updateOne(
+      { reference : productId},
+      { $set: updatedFields },
+      //{$set: { name : productName, description : productDescription}},
+      { new : true } // option to returns the updated doc
+    )
+    if (!updatedProduct) {
+      return res.status(404).json({error: 'Product not found'})
+    }
+    res.json(updatedProduct)
+  } catch (error) {
+    console.error('Error Updating the product:', error)
+    res.status(500).json({ error : 'Server Error'})
+  }
+})
 
 export default router
