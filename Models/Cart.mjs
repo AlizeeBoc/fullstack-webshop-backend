@@ -1,9 +1,10 @@
 import { Decimal128 } from "mongodb"
 import mongoose from "mongoose"
+import Product from "./Product.mjs"
 
 const cartsSchema = new mongoose.Schema({
   quantity: {
-   type: integer,
+   type: Number,
    required: true,
   },
   
@@ -20,8 +21,12 @@ const cartsSchema = new mongoose.Schema({
     required: true,
    },
    price: [{
-    type: mongoose.Schema.Types.price,
-    ref: 'products',
+    type: Number,
+    ref: Product,
+   }],
+  image: [{
+    type: String,
+    ref: Product,
    }]
 })
 

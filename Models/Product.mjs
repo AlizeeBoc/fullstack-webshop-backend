@@ -9,7 +9,7 @@ const productsSchema = new mongoose.Schema({
     },
     name : {
       type : String,
-      //required : true
+      required : true
     },
     description: {
      type: String,
@@ -21,7 +21,7 @@ const productsSchema = new mongoose.Schema({
     },
     image: {
       type: String,
-      //required: true,
+      required: true,
     }
   })
   
