@@ -1,5 +1,5 @@
 import express, { json } from "express"
-const router = express()
+const router = express.Router()
 import Product from "../Models/Product.mjs"
 
 // GET all products

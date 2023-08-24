@@ -1,8 +1,10 @@
 import express from "express"
-const router = express()
+const router = express.Router()
+import bodyParser from "express"
+router.use(bodyParser.json())
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 
-router.get('/', async(req, res) => {
-    console.log('hello'); // res.render(login.ejs) the form to login
-})
+
  
 export default router

@@ -25,8 +25,9 @@ console.log('MongoDB Atlas connected!');
 console.log(err);
 });
 
-
-app.listen(3000, () => console.log("Listen on port 3000"))
+app.set('port', process.env.PORT || 3000);
+app.listen(app.get('port'));
+//app.listen(3000, () => console.log("Listen on port 3000"))
 
 
 
