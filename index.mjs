@@ -1,14 +1,16 @@
 import express from "express"
 const app = express()
 import mongoose from "mongoose";
-//import dotenv from "dotenv";
-//dotenv.config();
+
+//if (process.env.NODE_ENV !== "production") {
+//    import("dotenv").then(dotenv => dotenv.config());
+//  }
+import dotenv from "dotenv";
+dotenv.config();
 import bodyParser from "body-parser"
 import indexRouter from "./routes/index.mjs"
 
-if (process.env.NODE_ENV !== "production") {
-    import("dotenv").then(dotenv => dotenv.config());
-  }
+
 
 const port = process.env.PORT || 9000
 
