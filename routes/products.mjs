@@ -1,5 +1,5 @@
 import express, { json } from "express"
-const router = express()
+const router = express.Router()
 import Product from "../Models/Product.mjs"
 
 // GET all products
@@ -30,6 +30,7 @@ router.get("/:productId", async (req, res) => {
 
 // Add a product
 router.post("/add-product", async (req, res) => {
+    //  manque info session stor age
   try {
     const referenceExists = await Product.findOne({ reference: req.body.reference });
     if (referenceExists) {

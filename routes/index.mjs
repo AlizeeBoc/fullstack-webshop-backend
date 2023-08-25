@@ -8,4 +8,7 @@ router.use('/products', productRouter)
 import loginRouter from "./login.mjs"
 router.use('/login', loginRouter)
 
+import registerRouter from "./register.mjs"
+router.use('/register', registerRouter)
+
 export default router

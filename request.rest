@@ -40,4 +40,20 @@ http://localhost:9000/cart
 ######################### Authorization ROUTES #########################
 
 ### LOGIN Route
-GET http://localhost:9000/login
+POST http://localhost:9000/login
+Content-Type: application/json
+
+{
+    "email" : "test2@test.com",
+    "password" : "test2"
+}
+
+### REGISTER Route
+POST http://localhost:9000/register
+Content-Type: application/json
+
+{
+    "name" : "test2",
+    "email": "test2@test.com",
+    "password" : "test2"
+}
