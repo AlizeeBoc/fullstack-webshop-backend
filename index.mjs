@@ -4,8 +4,11 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 import bodyParser from "body-parser"
-
 import indexRouter from "./routes/index.mjs"
+
+const port = process.env.PORT || 3000
+const nodeEnv = process.env.NODE_ENV
+const mySetting = process.env.MY_SETTING
 
 
 app.use(express.json())
@@ -25,9 +28,18 @@ console.log('MongoDB Atlas connected!');
 console.log(err);
 });
 
-app.set('port', process.env.PORT || 3000);
-app.listen(app.get('port'));
-//app.listen(3000, () => console.log("Listen on port 3000"))
+app.get('/api/healthcheck', (req, res) => {
+    res.send({
+        status : 'online',
+        nodeEnv,
+        mySetting
+    })
+})
+
+app.listen(port, () => {
+    console.log(`App listening on port ${port}`);
+})
+
 
 
 
