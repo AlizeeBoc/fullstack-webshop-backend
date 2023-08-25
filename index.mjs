@@ -7,9 +7,10 @@ import bodyParser from "body-parser"
 import indexRouter from "./routes/index.mjs"
 
 const port = process.env.PORT || 9000
-const nodeEnv = process.env.NODE_ENV
-const mySetting = process.env.MY_SETTING
-const version = 2
+
+//const nodeEnv = process.env.NODE_ENV
+//const mySetting = process.env.MY_SETTING
+//const version = 2
 
 app.use(express.json())
 app.use(bodyParser.urlencoded({ limit : '10mb', extended : false }))
