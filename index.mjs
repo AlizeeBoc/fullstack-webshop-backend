@@ -1,8 +1,8 @@
 import express from "express"
 const app = express()
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-dotenv.config();
+//import dotenv from "dotenv";
+//dotenv.config();
 import bodyParser from "body-parser"
 import indexRouter from "./routes/index.mjs"
 
