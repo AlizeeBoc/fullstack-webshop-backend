@@ -2,6 +2,10 @@
   "name": "fullstacke-commerce",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "8.x",
+    "npm": "6.x"
+   },
   "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
