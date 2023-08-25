@@ -21,9 +21,6 @@ const ordersSchema = new mongoose.Schema({
     address: {
      type: String,
      required: true,
-    },
-    cart: {
-      cartsSchema
     }
   })
   
