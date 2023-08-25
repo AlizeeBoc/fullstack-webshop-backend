@@ -4,61 +4,48 @@
 GET http://localhost:9000/products/
 
 ### GET a specific product based on its ref // ok
-GET http://localhost:9000/products/0
+GET http://localhost:9000/products/333
 
 
 ### CREATE a product //ok
 Post http://localhost:9000/products/add-product
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuYW1lIjoidGVzdDFBZG1pbiIsImVtYWlsIjoidGVzdDFBZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTY5Mjk2NTE5MiwiZXhwIjoxNjkzMjI0MzkyfQ.1zcNJ4Mhw22xnf3ehYxIDvccoEADsEsDJ8dHgCripXQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWRtaW4xIiwiZW1haWwiOiJBZG1pbjFAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTI5NzUwNzYsImV4cCI6MTY5MzIzNDI3Nn0.ac_wCpSFYqAKfB8a1g691V7tFsVlMiKm1i1qYLFpWPU
 
 
 {
-    "reference": 2123,
-    "name": "testi Loremm Ipsum", 
+    "reference": 7877,
+    "name": "lolo Loremm Ipsum", 
     "description": "Lorem ipsuuuuum",
     "price": 65.99,
     "image" : "https://i.pinimg.com/736x/9e/3f/5a/9e3f5a9ee345f387aaaff715faa11864.jpg"
 }
 
 ### DELETE a specific product based on its ref // ok
-DELETE http://localhost:9000/products/2123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuYW1lIjoidGVzdDFBZG1pbiIsImVtYWlsIjoidGVzdDFBZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTY5Mjk2NTE5MiwiZXhwIjoxNjkzMjI0MzkyfQ.1zcNJ4Mhw22xnf3ehYxIDvccoEADsEsDJ8dHgCripXQ
+DELETE http://localhost:9000/products/7877
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuYW1lIjoidGVzdDFBZG1pbiIsImVtYWlsIjoidGVzdDFBZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTY5Mjk3NDAyOCwiZXhwIjoxNjkzMjMzMjI4fQ.btLxD8Z_A0RRK9-FvIC5KZDwOdmCczolhISjtYqvKQM
 
 
 ### UPDATE a specific product 
 PATCH http://localhost:9000/products/1923
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuYW1lIjoidGVzdDFBZG1pbiIsImVtYWlsIjoidGVzdDFBZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTY5Mjk3NDAyOCwiZXhwIjoxNjkzMjMzMjI4fQ.btLxD8Z_A0RRK9-FvIC5KZDwOdmCczolhISjtYqvKQM
 
 {
     "name" : "XXX",
     "description" : "XXX"
 }
 
-######################### Carts ROUTES #########################
 
-### CREATE a new cart
-POST http://localhost:9000/cart/order
-??? 
-
-### GET all carts
-GET http://localhost:9000/cart
-
-### CREATE a new cart
-POST http://localhost:9000/cart/order/checkout
-??? 
-
-
-
-######################### Authorization ROUTES #########################
+######################### LOGIN/REGISTER ROUTES #########################
 
 ### REGISTER Route
 POST http://localhost:9000/register/admin
 Content-Type: application/json
 
 {
-    "name" : "test1Admin",
-    "email": "test1Admin@test.com",
+    "name" : "Admin1",
+    "email": "Admin1@test.com",
     "password" : "test3"
 }
 
@@ -68,6 +55,6 @@ POST http://localhost:9000/login/admin
 Content-Type: application/json
 
 {
-    "email" : "test1Admin@test.com",
+    "email" : "Admin1@test.com",
     "password" : "test3"
 }

@@ -1,7 +1,8 @@
 import User from "../Models/User.mjs";
 
 const checkRole = (roles) => async (req, res, next) => {
-    let { name } = req.body;
+    let { name } = req.user;
+    console.log(name);
   
     // Retrieve employee info from DB
     const user = await User.findOne({ name });
