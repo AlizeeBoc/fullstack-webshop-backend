@@ -6,16 +6,16 @@ dotenv.config();
 import bodyParser from "body-parser"
 import indexRouter from "./routes/index.mjs"
 
-const port = process.env.PORT || 9000
+if (process.env.NODE_ENV !== "production") {
+    import("dotenv").then(dotenv => dotenv.config());
+  }
 
-//const nodeEnv = process.env.NODE_ENV
-//const mySetting = process.env.MY_SETTING
-//const version = 2
+const port = process.env.PORT || 9000
 
 app.use(express.json())
 app.use(bodyParser.urlencoded({ limit : '10mb', extended : false }))
 
-app.use("/", indexRouter)
+//app.use("/", indexRouter)
 
 const username_mongo = process.env.username_mongo
 const password_mongo = process.env.mongo_password
