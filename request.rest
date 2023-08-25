@@ -12,9 +12,9 @@ Post http://localhost:9000/products/add-product
 Content-Type: application/json
 
 {
-    "reference": 1123,
-    "name": "Gloves Lorem Ipsum", 
-    "description": "Lorem ipsum",
+    "reference": 1923,
+    "name": "Gloves Loremm Ipsum", 
+    "description": "Lorem ipsuuuuum",
     "price": 65.99,
     "image" : "https://i.pinimg.com/736x/9e/3f/5a/9e3f5a9ee345f387aaaff715faa11864.jpg"
 }
@@ -24,7 +24,7 @@ DELETE http://localhost:9000/products/2000
 
 
 ### UPDATE a specific product 
-PATCH http://localhost:9000/products/333
+PATCH http://localhost:9000/products/1923
 Content-Type: application/json
 
 {
@@ -34,26 +34,37 @@ Content-Type: application/json
 
 ######################### Carts ROUTES #########################
 
+### CREATE a new cart
+POST http://localhost:9000/cart/order
+??? 
+
 ### GET all carts
-http://localhost:9000/cart
+GET http://localhost:9000/cart
+
+### CREATE a new cart
+POST http://localhost:9000/cart/order/checkout
+??? 
+
+
 
 ######################### Authorization ROUTES #########################
 
-### LOGIN Route
-POST http://localhost:9000/login
+### REGISTER Route
+POST http://localhost:9000/register/admin
 Content-Type: application/json
 
 {
-    "email" : "test2@test.com",
-    "password" : "test2"
+    "name" : "test1Admin",
+    "email": "test1Admin@test.com",
+    "password" : "test3"
 }
 
-### REGISTER Route
-POST http://localhost:9000/register
+
+### LOGIN Route
+POST http://localhost:9000/login/admin
 Content-Type: application/json
 
 {
-    "name" : "test2",
-    "email": "test2@test.com",
-    "password" : "test2"
+    "email" : "test1Admin@test.com",
+    "password" : "test3"
 }
