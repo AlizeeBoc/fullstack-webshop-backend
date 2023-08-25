@@ -1,6 +1,7 @@
 import express, { json } from "express"
 const router = express.Router()
 import Product from "../Models/Product.mjs"
+import authenticateUser from "../middleware/authenticateUser.mjs"
 
 // GET all products
 router.get("/", async (req, res) => {
@@ -29,7 +30,7 @@ router.get("/:productId", async (req, res) => {
 })
 
 // Add a product
-router.post("/add-product", async (req, res) => {
+router.post("/add-product", authenticateUser, async (req, res) => {
     //  manque info session stor age
   try {
     const referenceExists = await Product.findOne({ reference: req.body.reference });
@@ -59,7 +60,7 @@ router.post("/add-product", async (req, res) => {
 })
 
 // DELETE a product
-router.delete("/:productId", async (req, res) => {
+router.delete("/:productId", authenticateUser, async (req, res) => {
   const productId = req.params.productId
   try {
     const removedProduct = await Product.deleteOne({ reference : productId})
@@ -74,7 +75,7 @@ router.delete("/:productId", async (req, res) => {
 })
 
 //Update a product
-router.patch('/:productId', async(req, res) => {
+router.patch('/:productId', authenticateUser, async(req, res) => {
   const productId = req.params.productId
   const updatedFields = req.body
   ////const updatedFields = req.body

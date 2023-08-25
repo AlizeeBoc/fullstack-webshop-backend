@@ -10,17 +10,20 @@ GET http://localhost:9000/products/0
 ### CREATE a product //ok
 Post http://localhost:9000/products/add-product
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuYW1lIjoidGVzdDFBZG1pbiIsImVtYWlsIjoidGVzdDFBZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTY5Mjk2NTE5MiwiZXhwIjoxNjkzMjI0MzkyfQ.1zcNJ4Mhw22xnf3ehYxIDvccoEADsEsDJ8dHgCripXQ
+
 
 {
-    "reference": 1923,
-    "name": "Gloves Loremm Ipsum", 
+    "reference": 2123,
+    "name": "testi Loremm Ipsum", 
     "description": "Lorem ipsuuuuum",
     "price": 65.99,
     "image" : "https://i.pinimg.com/736x/9e/3f/5a/9e3f5a9ee345f387aaaff715faa11864.jpg"
 }
 
 ### DELETE a specific product based on its ref // ok
-DELETE http://localhost:9000/products/2000
+DELETE http://localhost:9000/products/2123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJuYW1lIjoidGVzdDFBZG1pbiIsImVtYWlsIjoidGVzdDFBZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTY5Mjk2NTE5MiwiZXhwIjoxNjkzMjI0MzkyfQ.1zcNJ4Mhw22xnf3ehYxIDvccoEADsEsDJ8dHgCripXQ
 
 
 ### UPDATE a specific product 
