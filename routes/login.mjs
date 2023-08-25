@@ -1,5 +1,5 @@
 import express from "express"
-import loginUser from "../controllers/loginUser.mjs"
+import loginUser from "../controllers/loginController.mjs"
 
 const router = express.Router()
 router.use(express.json())
