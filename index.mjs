@@ -28,13 +28,6 @@ console.log('MongoDB Atlas connected!');
 console.log(err);
 });
 
-app.get('/api/healthcheck', (req, res) => {
-    res.send({
-        status : 'online',
-        nodeEnv,
-        mySetting
-    })
-})
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
