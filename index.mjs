@@ -1,15 +1,18 @@
 import express from "express"
 const app = express()
 import mongoose from "mongoose";
+
+//if (process.env.NODE_ENV !== "production") {
+//    import("dotenv").then(dotenv => dotenv.config());
+//  }
 import dotenv from "dotenv";
 dotenv.config();
 import bodyParser from "body-parser"
 import indexRouter from "./routes/index.mjs"
 
-const port = process.env.PORT || 3000
-const nodeEnv = process.env.NODE_ENV
-const mySetting = process.env.MY_SETTING
-const version = 2
+
+
+const port = process.env.PORT || 9000
 
 app.use(express.json())
 app.use(bodyParser.urlencoded({ limit : '10mb', extended : false }))
@@ -28,13 +31,6 @@ console.log('MongoDB Atlas connected!');
 console.log(err);
 });
 
-app.get('/api/healthcheck', (req, res) => {
-    res.send({
-        status : 'online',
-        nodeEnv,
-        mySetting
-    })
-})
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);

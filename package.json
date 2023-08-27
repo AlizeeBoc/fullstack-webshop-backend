@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "engines": {
-    "node": "8.x",
-    "npm": "6.x"
+    "node": "18.16.x",
+    "npm": "9.5.x"
    },
   "main": "index.mjs",
   "scripts": {
+    "start" : "node index.mjs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.mjs"
   },
