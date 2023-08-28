@@ -4,38 +4,48 @@
 GET http://localhost:9000/products/
 
 ### GET a specific product based on its ref // ok
-GET http://localhost:9000/products/0
+GET http://localhost:9000/products/333
 
 
 ### CREATE a product //ok
 Post http://localhost:9000/products/add-product
 Content-Type: application/json
+Authorization: Bearer 
 
 {
-    "reference": 1123,
-    "name": "Gloves Lorem Ipsum", 
-    "description": "Lorem ipsum",
+    "reference": 7877,
+    "name": "lolo Loremm Ipsum", 
+    "description": "Lorem ipsuuuuum",
     "price": 65.99,
     "image" : "https://i.pinimg.com/736x/9e/3f/5a/9e3f5a9ee345f387aaaff715faa11864.jpg"
 }
 
 ### DELETE a specific product based on its ref // ok
-DELETE http://localhost:9000/products/2000
+DELETE http://localhost:9000/products/7877
+Authorization: Bearer 
 
 
 ### UPDATE a specific product 
-PATCH http://localhost:9000/products/333
+PATCH http://localhost:9000/products/1923
 Content-Type: application/json
-
+Authorization: Bearer 
 {
     "name" : "XXX",
     "description" : "XXX"
 }
 
-######################### Carts ROUTES #########################
 
-### GET all carts
-http://localhost:9000/cart
+######################### LOGIN/REGISTER ROUTES #########################
+
+### REGISTER Route
+POST http://localhost:9000/register/admin
+Content-Type: application/json
+
+{
+    "name" : "Admin1",
+    "email": "Admin1@test.com",
+    "password" : "test3"
+}
 
 ### GET all carts
 http://localhost:9000/cart
@@ -45,5 +55,12 @@ http://localhost:9000/order/checkout
 
 ######################### Authorization ROUTES #########################
 
+
 ### LOGIN Route
-GET http://localhost:9000/login
+POST http://localhost:9000/login/admin
+Content-Type: application/json
+
+{
+    "email" : "Admin1@test.com",
+    "password" : "test3"
+}
