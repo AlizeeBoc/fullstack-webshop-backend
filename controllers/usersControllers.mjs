@@ -79,6 +79,27 @@ export const updateUser = async(req, res) => {
 }
 
 
+export const getEmployees = async (req, res) => {
+  try {
+    const employees = await User.find()
+    res.json(employees)
+  } catch (err) {
+    console.error("Error while retrieving employees :", err)
+    res.status(500).json({ error: "Server error" })
+  }
+}
+
+export const getEmployee = async (req, res) => {
+  try {
+    const userId = req.params.userId
+    const employee = await User.find({"_id" : userId})
+    res.json(employee)
+  } catch (err) {
+    console.error('Error while retrieving user :', err)
+    res.status(500).json({error : "Server error"})
+  }
+}
+
 // LEFTODO!
 // get a user
 // get all employees

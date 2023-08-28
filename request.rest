@@ -35,7 +35,7 @@ Authorization: Bearer
 }
 
 
-######################### LOGIN/REGISTER ROUTES #########################
+######################### USERS ROUTES #########################
 
 ### REGISTER Route for admins
 POST http://localhost:9000/users/admin
@@ -77,16 +77,13 @@ Authorization: Bearer
     "name" : "employeaaaaah!"
 }
 
+### Get all employees
+GET  http://localhost:9000/users/employee
+Authorization: Baerer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWRtaW4xIiwiZW1haWwiOiJBZG1pbjFAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTMyNTA3MDAsImV4cCI6MTY5MzUwOTkwMH0.RH5ybkIW2kzfbB-Hzy8_CT-ZEyoB3uneX7wvG_FtBi0
 
-### GET all employees
-
-### GET all carts
-http://localhost:9000/cart
-
-### POST an order
-http://localhost:9000/order/checkout
-
-
+### Get an employee by ID
+GET  http://localhost:9000/users/employee/64e8bbc7406d8c7a3c4953d5
+Authorization: Baerer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWRtaW4xIiwiZW1haWwiOiJBZG1pbjFAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTMyNTA3MDAsImV4cCI6MTY5MzUwOTkwMH0.RH5ybkIW2kzfbB-Hzy8_CT-ZEyoB3uneX7wvG_FtBi0
 
 
 ### LOGIN Route

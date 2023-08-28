@@ -1,6 +1,6 @@
 import express from "express"
 //import registerUser from "../controllers/registerController.mjs"
-import { registerUser, deleteUser, updateUser } from "../controllers/usersControllers.mjs"
+import { registerUser, deleteUser, updateUser, getEmployees, getEmployee } from "../controllers/usersControllers.mjs"
 import authenticateUser from "../middleware/authenticateUser.mjs"
 import checkRole from "../middleware/checkRole.mjs"
 
@@ -30,7 +30,14 @@ router.patch('/employee/:userId', authenticateUser, checkRole(["admin"]), (req, 
 })
 
 // Get all employees
+router.get('/employee', authenticateUser, checkRole(["admin"]), (req, res) => {
+    getEmployees(req, res)
+})
 
+// Get employee
+router.get('/employee/:userId', authenticateUser, checkRole(["admin"]), (req, res) => {
+    getEmployee(req, res)
+})
 
 
 export default router
