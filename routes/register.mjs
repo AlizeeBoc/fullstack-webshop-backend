@@ -1,5 +1,5 @@
 import express from "express"
-import registerUser from "../controllers/registerUser.mjs"
+import registerUser from "../controllers/registerController.mjs"
 
 const router = express.Router()
 router.use(express.json())

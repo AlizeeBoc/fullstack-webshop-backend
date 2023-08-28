@@ -30,9 +30,9 @@ const loginUser = async (req, role, res) => {
    // If checkPassword : generate a JWT and send it to the front
    const accesToken = jwt.sign(
     { 
-        role : user.role,
         name: user.name,
-        email : user.email 
+        email : user.email,
+        role : user.role
     }, 
     process.env.SECRET_KEY, 
     { expiresIn: '3 days' }
