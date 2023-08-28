@@ -7,22 +7,26 @@ import cookieParser from "cookie-parser"
 import { v4 as uuidv4 } from 'uuid'
 
 
+//express router instance
 const router = express()
+//an object to store cart items for different users
 const cart = {}
 
 //session and cookie-parser middleware
 router.use(cookieParser())
 router.use(session({
     secret: 'webshop1234',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
+    resave: false, //don't save the session if not modified
+    saveUninitialized: true, //Save new session that have been modified
+    cookie: { secure: false } //cookie settings are not secured, for the sake of development(false)
 }))
 
+/*------------------------------- Post request to add an Item to cart ----------------------------------*/
 router.post('/order', async (req, res) => {
     try {
-        let userId = req.session.userId;
+        let userId = req.session.userId
 
+        //generate a new userId if not present in the session
         if (!userId) {
             userId = uuidv4();
             req.session.userId = userId;
@@ -41,6 +45,7 @@ router.post('/order', async (req, res) => {
             cart[userId] = []
         }
 
+        //create a new cart item and add it to the user's cart
         const cartItem = new Cart({
             userId: userId,
             reference: Product.reference,
@@ -52,7 +57,7 @@ router.post('/order', async (req, res) => {
             image: Product.image
         })
         cart[userId].push(cartItem)
-        // await cartItem.save()
+        // await cartItem.save() //add item to the database
         res.json({ msg: 'Item added to cart' })
     } catch (error) {
         console.error('Error adding item to cart:', error)
@@ -61,7 +66,7 @@ router.post('/order', async (req, res) => {
 })
 
 
-// retrieve cart items for the user
+/*---------------------------- Get request to retrieve cart items of the user ---------------------------*/
 router.get('/',async(req, res) => {
     try {
 
@@ -79,7 +84,7 @@ router.get('/',async(req, res) => {
     }
 })
 
-// Checkout
+/*------------------------------- Post request to checkout and place an order  ---------------------------*/
 router.post('/order/checkout', async (req, res) => {
     try {
         const userId = req.session.userId;
@@ -89,8 +94,10 @@ router.post('/order/checkout', async (req, res) => {
             return res.status(400).json({ message: 'Cart is empty' })
         }
 
+         // Extract order details from the request body
         const { status, firstname, lastname, email, address, bankDetails } = req.body
 
+        //create order items based on the cart items
         const orderItems = cartItems.map(cartItem => ({
             reference: cartItem.reference,
             waist: cartItem.waist,
@@ -100,6 +107,7 @@ router.post('/order/checkout', async (req, res) => {
             image: cartItem.image
         }));
 
+        // Create a new Order instance and save it to the database
         const order = new Order({
             status,
             firstname,
@@ -111,7 +119,7 @@ router.post('/order/checkout', async (req, res) => {
         });
 
         await order.save()
-        // Clear the user's cart after checkout
+        // Clear the user's cart after successful checkout
         cart[userId] = []
         
         res.status(201).json({ message: 'Order placed successfully' });
