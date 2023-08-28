@@ -100,9 +100,10 @@ router.post('/order/checkout', async (req, res) => {
     try {
         const userId = req.session.userId;
         const cartItems = cart[userId] || [];
-        
+        console.log('Generated userId:', userId);
         if (cartItems.length === 0) {
             return res.status(400).json({ message: 'Cart is empty' })
+            
         }
 
          // Extract order details from the request body
@@ -135,8 +136,8 @@ router.post('/order/checkout', async (req, res) => {
         
         res.status(201).json({ message: 'Order placed successfully' });
     } catch (error) {
-        console.error('Error placing order:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        console.error('Error placing order:', error)
+        res.status(500).json({ message: 'Internal server error' })
     }
 })
 
