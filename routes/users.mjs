@@ -9,7 +9,7 @@ router.use(express.json())
 
 router.use(express.urlencoded({extended: true}))
 
-// Register an admin
+// Create an admin
 router.post('/admin', (req, res) => {
     registerUser(req,"admin", res)
 })
