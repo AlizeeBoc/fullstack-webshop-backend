@@ -10,10 +10,7 @@ dotenv.config()
 import bodyParser from "body-parser"
 import indexRouter from "./routes/index.mjs"
 
-console.log("mode :", process.env.NODE_ENV) // debug
-
 const port = process.env.PORT || 9000
-console.log("port: ", process.env.PORT) // debug
 
 app.use(express.json())
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: false }))

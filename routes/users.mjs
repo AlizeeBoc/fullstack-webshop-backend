@@ -1,18 +1,38 @@
 import express from "express"
-import registerUser from "../controllers/registerController.mjs"
+//import registerUser from "../controllers/registerController.mjs"
+import { registerUser, deleteUser, updateUser } from "../controllers/usersControllers.mjs"
+import authenticateUser from "../middleware/authenticateUser.mjs"
+import checkRole from "../middleware/checkRole.mjs"
 
 const router = express.Router()
 router.use(express.json())
 
 router.use(express.urlencoded({extended: true}))
 
-router.post('/employee', (req, res) => {
-    registerUser(req, "employee", res)
-})
-
+// Register an admin
 router.post('/admin', (req, res) => {
     registerUser(req,"admin", res)
 })
+
+// Create an employee
+router.post('/employee', authenticateUser, checkRole(["admin"]), (req, res) => {
+    registerUser(req, "employee", res)
+})
+
+// Delete an employee
+router.delete('/employee', authenticateUser, checkRole(["admin"]), (req, res) => {
+    deleteUser(req, res)
+})
+
+// Update an employee
+router.patch('/employee/:userId', authenticateUser, checkRole(["admin"]), (req, res) => {
+    updateUser(req, res)
+})
+
+// Get all employees
+
+
+
 export default router
 
 //import express, {json} from "express"
