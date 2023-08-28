@@ -1,68 +1,48 @@
 import express from "express"
 const app = express()
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
 //if (process.env.NODE_ENV !== "production") {
 //    import("dotenv").then(dotenv => dotenv.config());
 //  }
-import dotenv from "dotenv";
-dotenv.config();
+import dotenv from "dotenv"
+dotenv.config()
 import bodyParser from "body-parser"
 import indexRouter from "./routes/index.mjs"
 
-
+console.log("mode :", process.env.NODE_ENV) // debug
 
 const port = process.env.PORT || 9000
+console.log("port: ", process.env.PORT) // debug
 
 app.use(express.json())
-app.use(bodyParser.urlencoded({ limit : '10mb', extended : false }))
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: false }))
 
 app.use("/", indexRouter)
 
 const username_mongo = process.env.username_mongo
 const password_mongo = process.env.mongo_password
 
-mongoose.connect(`mongodb+srv://${username_mongo}:${password_mongo}@eshop.yo4pqlj.mongodb.net/eshop?retryWrites=true&w=majority`, {
-useNewUrlParser: true,
-useUnifiedTopology: true
-}).then(() => {
-console.log('MongoDB Atlas connected!');
-}).catch(err => {
-console.log(err);
-});
-
+mongoose
+  .connect(
+    `mongodb+srv://${username_mongo}:${password_mongo}@eshop.yo4pqlj.mongodb.net/eshop?retryWrites=true&w=majority`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then(() => {
+    console.log("MongoDB Atlas connected!")
+  })
+  .catch((err) => {
+    console.log(err)
+  })
 
 app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
+  console.log(`App listening on port ${port}`)
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//////// 
+////////
 /*
 npm init -y
 npm install express
