@@ -37,6 +37,12 @@ Content-Type: application/json
 ### GET all carts
 http://localhost:9000/cart
 
+### GET all carts
+http://localhost:9000/cart
+
+### POST an order
+http://localhost:9000/order/checkout
+
 ######################### Authorization ROUTES #########################
 
 ### LOGIN Route

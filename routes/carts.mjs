@@ -1,5 +1,4 @@
 import express from "express"
-import Cart from "../Models/Cart.mjs"
 import Order from "../Models/Order.mjs"
 import Product from "../Models/Product.mjs"
 import session from "express-session"
@@ -45,8 +44,20 @@ router.post('/order', async (req, res) => {
             cart[userId] = []
         }
 
+        // Create an arrow function to create cart items
+        const createCartItem = (userId, reference, quantity, chest, waist, hips, price, image) => ({
+            userId,
+            reference,
+            quantity,
+            chest,
+            waist,
+            hips,
+            price,
+            image
+        })
+
         //create a new cart item and add it to the user's cart
-        const cartItem = new Cart({
+        const cartItem = createCartItem({
             userId: userId,
             reference: Product.reference,
             quantity,
@@ -73,11 +84,11 @@ router.get('/',async(req, res) => {
         const userId = req.session.userId;
         console.log('Retrieved userId from session:', userId);
         
-        const cartItems = await Cart.find({ userId })
+        const userCartItems = cart[userId] || []
 
-        console.log('Fetched cart items:', cartItems)
+        console.log('Fetched cart items:', userCartItems)
 
-        res.json(cartItems)
+        res.json(userCartItems)
     } catch (error) {
         console.error('Error fetching cart:', error)
         res.status(500).json({ message: 'Internal server error' })
