@@ -47,6 +47,7 @@ Content-Type: application/json
     "password" : "test3"
 }
 
+
 ### Create a new employee
 POST http://localhost:9000/users/employee
 Content-Type: application/json
@@ -78,6 +79,14 @@ Authorization: Bearer
 
 
 ### GET all employees
+
+### GET all carts
+http://localhost:9000/cart
+
+### POST an order
+http://localhost:9000/order/checkout
+
+
 
 
 ### LOGIN Route
