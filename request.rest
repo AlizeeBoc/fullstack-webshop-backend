@@ -47,6 +47,14 @@ Content-Type: application/json
     "password" : "test3"
 }
 
+### GET all carts
+http://localhost:9000/cart
+
+### POST an order
+http://localhost:9000/order/checkout
+
+######################### Authorization ROUTES #########################
+
 
 ### LOGIN Route
 POST http://localhost:9000/login/admin
