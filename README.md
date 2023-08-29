@@ -1,4 +1,4 @@
-# fullstack-webshop-backend
+# fullstack-webshop-backend available on [heroku](https://ashmademoiselle-8623d0938879.herokuapp.com/)
 ###### Endpoints for index
 |Endpoint   |Method   |Bearer Token?   |Admin Token?   |Description   |
 | ------------ | ------------ | ------------ | ------------ | ------------ |
