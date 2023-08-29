@@ -21,9 +21,9 @@
 
 |Endpoint   |Method   |Bearer Token?   |Admin Token?   |Request   |Response   |Model   |
 | ------------ | ------------ | ------------ | ------------ | ------------ | ------------ | ------------ |
-|/order   |POST   |No   |No   |An object containing: { productId, quantity, chest, waist, hips }   |A success message if the item is successfully added to the cart or an error message in case of failure   |No   |
-|/   |GET   |No   |No   |   |An array of cart items retrieved for the user or an error message in case of failure    |No   |
-|/order/checkout   |POST   |No   |No   |An object containing: {status, firstname, lastname, email, address, bankDetails}   |A success message if the order is successfully placed or an error message in case of failure.   |Order  |
+|/cart/order   |POST   |No   |No   |An object containing: { productId, quantity, chest, waist, hips }   |A success message if the item is successfully added to the cart or an error message in case of failure   |No   |
+|/cart   |GET   |No   |No   |   |An array of cart items retrieved for the user or an error message in case of failure    |No   |
+|/cart/order/checkout   |POST   |No   |No   |An object containing: {status, firstname, lastname, email, address, bankDetails}   |A success message if the order is successfully placed or an error message in case of failure.   |Order  |
 
 ###### Endpoints for register 
 
