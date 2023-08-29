@@ -10,7 +10,7 @@ GET http://localhost:9000/products/333
 ### CREATE a product //ok
 Post http://localhost:9000/products/add-product
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWRtaW4xIiwiZW1haWwiOiJBZG1pbjFAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTMyMjk0MTcsImV4cCI6MTY5MzQ4ODYxN30.nMAEwxLJVHuX6EMnXbN8ttb1RwVOD3rw2qWCXoiX1xc
 
 {
     "reference": 7877,
@@ -37,8 +37,8 @@ Authorization: Bearer
 
 ######################### LOGIN/REGISTER ROUTES #########################
 
-### REGISTER Route
-POST http://localhost:9000/register/admin
+### REGISTER Route for admins
+POST http://localhost:9000/users/admin
 Content-Type: application/json
 
 {
@@ -47,13 +47,46 @@ Content-Type: application/json
     "password" : "test3"
 }
 
+
+### Create a new employee
+POST http://localhost:9000/users/employee
+Content-Type: application/json
+Authorization: Bearer 
+
+{
+    "name" : "testEmployee",
+    "email": "testEmployee@test.com",
+    "password" : "test3"
+}
+
+### Delete an employee
+DELETE http://localhost:9000/users/employee
+Content-Type: application/json
+Authorization: Bearer 
+
+{
+    "name" : "employee"
+}
+
+### update an employee
+PATCH http://localhost:9000/users/employee/64ecb244683b3e08865661d3
+Content-Type: application/json
+Authorization: Bearer 
+
+{
+    "name" : "employeaaaaah!"
+}
+
+
+### GET all employees
+
 ### GET all carts
 http://localhost:9000/cart
 
 ### POST an order
 http://localhost:9000/order/checkout
 
-######################### Authorization ROUTES #########################
+
 
 
 ### LOGIN Route
@@ -64,3 +97,5 @@ Content-Type: application/json
     "email" : "Admin1@test.com",
     "password" : "test3"
 }
+
+
