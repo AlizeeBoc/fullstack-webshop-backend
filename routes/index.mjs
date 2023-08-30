@@ -11,4 +11,7 @@ router.use('/login', loginRouter)
 import usersRouter from "./users.mjs"
 router.use('/users', usersRouter)
 
+import contactEmailRouter from "./email.mjs"
+router.use('/contact', contactEmailRouter)
+
 export default router

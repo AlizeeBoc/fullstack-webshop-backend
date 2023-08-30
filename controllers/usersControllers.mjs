@@ -1,6 +1,11 @@
 import bcrypt from "bcrypt";
 import User from "../Models/User.mjs";
 
+const isValidEmail = (email) => {
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return regex.test(email);
+}
+
 export const registerUser = async (req, role, res) => {
     const { name, email, password } = req.body;
     
@@ -8,6 +13,10 @@ export const registerUser = async (req, role, res) => {
     try {
       if (!name || !email || !password) {
         return res.status(400).send({ error: "All fields are required" });
+      }
+
+      if (!isValidEmail(email)) {
+        return res.status(400).send({ error: "Invalid email format" });
       }
 
     //Check if the user already exists
