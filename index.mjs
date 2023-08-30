@@ -20,6 +20,10 @@ app.use(bodyParser.urlencoded({ limit: "10mb", extended: false }))
 app.use(cors({
   origin: "http://localhost:3000", 
 }))
+
+// Serve images from the "uploads" directory
+app.use("/uploads", express.static("uploads"))
+
 app.use("/", indexRouter)
 
 const username_mongo = process.env.username_mongo
