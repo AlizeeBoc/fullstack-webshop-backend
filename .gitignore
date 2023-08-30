@@ -3,4 +3,3 @@ node_modules
 package-lock.json
 brouillon
 datas.mjs
-request.rest
