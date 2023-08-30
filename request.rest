@@ -37,13 +37,22 @@ Authorization: Bearer
 
 ######################### USERS ROUTES #########################
 
+### LOGIN Route
+POST http://localhost:9000/login/admin
+Content-Type: application/json
+
+{
+    "email" : "Admin1@test.com",
+    "password" : "test3"
+}
+
 ### REGISTER Route for admins
 POST http://localhost:9000/users/admin
 Content-Type: application/json
 
 {
-    "name" : "Admin1",
-    "email": "Admin1@test.com",
+    "name" : "Admin0",
+    "email": "Admin0@test.com",
     "password" : "test3"
 }
 
@@ -79,20 +88,19 @@ Authorization: Bearer
 
 ### Get all employees
 GET  http://localhost:9000/users/employee
-Authorization: Baerer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWRtaW4xIiwiZW1haWwiOiJBZG1pbjFAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTMyNTA3MDAsImV4cCI6MTY5MzUwOTkwMH0.RH5ybkIW2kzfbB-Hzy8_CT-ZEyoB3uneX7wvG_FtBi0
-
+Authorization: Baerer 
 ### Get an employee by ID
 GET  http://localhost:9000/users/employee/64e8bbc7406d8c7a3c4953d5
-Authorization: Baerer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWRtaW4xIiwiZW1haWwiOiJBZG1pbjFAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTMyNTA3MDAsImV4cCI6MTY5MzUwOTkwMH0.RH5ybkIW2kzfbB-Hzy8_CT-ZEyoB3uneX7wvG_FtBi0
+Authorization: Baerer 
 
 
-### LOGIN Route
-POST http://localhost:9000/login/admin
+########################## CONTACT FORM ##########################
+
+POST http://localhost:9000/contact
 Content-Type: application/json
 
 {
-    "email" : "Admin1@test.com",
-    "password" : "test3"
+    "email": "456@gmail.com",
+    "subject": "Test message",
+    "content": "Just another test message"
 }
-
-
