@@ -10,7 +10,7 @@ GET http://localhost:9000/products/333
 ### CREATE a product //ok
 Post http://localhost:9000/products/add-product
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWRtaW4xIiwiZW1haWwiOiJBZG1pbjFAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTMyMjk0MTcsImV4cCI6MTY5MzQ4ODYxN30.nMAEwxLJVHuX6EMnXbN8ttb1RwVOD3rw2qWCXoiX1xc
 
 {
     "reference": 7877,
@@ -35,26 +35,7 @@ Authorization: Bearer
 }
 
 
-######################### LOGIN/REGISTER ROUTES #########################
-
-### REGISTER Route
-POST http://localhost:9000/register/admin
-Content-Type: application/json
-
-{
-    "name" : "Admin1",
-    "email": "Admin1@test.com",
-    "password" : "test3"
-}
-
-### GET all carts
-http://localhost:9000/cart
-
-### POST an order
-http://localhost:9000/order/checkout
-
-######################### Authorization ROUTES #########################
-
+######################### USERS ROUTES #########################
 
 ### LOGIN Route
 POST http://localhost:9000/login/admin
@@ -63,4 +44,63 @@ Content-Type: application/json
 {
     "email" : "Admin1@test.com",
     "password" : "test3"
+}
+
+### REGISTER Route for admins
+POST http://localhost:9000/users/admin
+Content-Type: application/json
+
+{
+    "name" : "Admin0",
+    "email": "Admin0@test.com",
+    "password" : "test3"
+}
+
+
+### Create a new employee
+POST http://localhost:9000/users/employee
+Content-Type: application/json
+Authorization: Bearer 
+
+{
+    "name" : "testEmployee",
+    "email": "testEmployee@test.com",
+    "password" : "test3"
+}
+
+### Delete an employee
+DELETE http://localhost:9000/users/employee
+Content-Type: application/json
+Authorization: Bearer 
+
+{
+    "name" : "employee"
+}
+
+### update an employee
+PATCH http://localhost:9000/users/employee/64ecb244683b3e08865661d3
+Content-Type: application/json
+Authorization: Bearer 
+
+{
+    "name" : "employeaaaaah!"
+}
+
+### Get all employees
+GET  http://localhost:9000/users/employee
+Authorization: Baerer 
+### Get an employee by ID
+GET  http://localhost:9000/users/employee/64e8bbc7406d8c7a3c4953d5
+Authorization: Baerer 
+
+
+########################## CONTACT FORM ##########################
+
+POST http://localhost:9000/contact
+Content-Type: application/json
+
+{
+    "email": "456@gmail.com",
+    "subject": "Test message",
+    "content": "Just another test message"
 }

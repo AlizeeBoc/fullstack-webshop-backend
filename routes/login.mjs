@@ -3,7 +3,6 @@ import loginUser from "../controllers/loginController.mjs"
 
 const router = express.Router()
 router.use(express.json())
-
 router.use(express.urlencoded({extended: true}))
 
 router.post('/employee', async (req, res) => {
