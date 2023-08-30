@@ -1,7 +1,7 @@
 {
   "name": "fullstacke-commerce",
   "version": "1.0.0",
-  "description": "",
+  "description": "|Endpoint   |Method   |Bearer Token?   |Admin Token?   |Description   | | ------------ | ------------ | ------------ | ------------ | ------------ | |/products   |GET   |No   |No   |Routes for retrieving product information   | |/cart   |GET   |No   |No   |Routes for viewing and modifying the user's shopping cart   | |/login   |GET   |No   |No   |Route for admin login and authentication   | |/register   |GET   |No   |No   |Routes for admin registration   |",
   "engines": {
     "node": "18.16.x",
     "npm": "9.5.x"
@@ -26,13 +26,12 @@
     "express-session": "^1.17.3",
     "git": "^0.1.5",
     "jsonwebtoken": "^9.0.1",
-    "mongodb": "^5.8.0",
-    "mongoose": "^7.4.4",
+    "mongodb": "^5.8.1",
+    "mongoose": "^7.5.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.4",
     "nodemailer-mailgun-transport": "^2.1.5",
     "nodemailer-sendgrid": "^1.0.3",
-
     "uuid": "^9.0.0"
   },
   "devDependencies": {
