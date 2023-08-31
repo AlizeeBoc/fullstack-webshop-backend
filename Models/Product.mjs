@@ -27,6 +27,7 @@ const productsSchema = new mongoose.Schema({
         //    type: Buffer,
         //    required: true,
         //},
+
         contentType: {
             type: String,
             required: true,
