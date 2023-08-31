@@ -22,7 +22,7 @@ app.use(cors({
 }))
 
 // Serve images from the "uploads" directory
-app.use("/uploads", express.static("uploads"))
+app.use("/uploads", express.static("uploads"));
 
 app.use("/", indexRouter)
 
