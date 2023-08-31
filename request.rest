@@ -10,7 +10,7 @@ GET http://localhost:9000/products/555
 ### CREATE a product //ok
 Post http://localhost:9000/products/add-product
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWRtaW4xIiwiZW1haWwiOiJhZG1pbjFAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTMzOTkzODEsImV4cCI6MTY5MzY1ODU4MX0.A5uzXivwVY0G8bU4dLGnPtCscIRSHKnyMLMH7lVqTNs
 
 {
     "reference": 1,
