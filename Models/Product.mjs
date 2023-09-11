@@ -1,5 +1,5 @@
-import { Decimal128 } from "mongodb";
-import mongoose from "mongoose";
+import { Decimal128 } from "mongodb"
+import mongoose from "mongoose"
 
 const productsSchema = new mongoose.Schema({
     reference: {
