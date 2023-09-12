@@ -18,16 +18,10 @@ const productsSchema = new mongoose.Schema({
         type: Decimal128,
         required: true,
     },
-    //image: {
-    //    name: {
-    //        type: String,
-    //        required: true,
-    //    },
-    //    contentType: {
-    //        type: String,
-    //        required: true,
-    //    },
-    //},
+imageURL: {
+    type: String,
+    required : false,
+}
 });
 
 const Product = mongoose.model("products", productsSchema);

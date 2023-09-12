@@ -12,7 +12,7 @@ import indexRouter from "./routes/index.mjs"
 
 dotenv.config()
 
-const port = process.env.PORT || 9000
+const port = process.env.PORT || 3200
 
 app.use(express.json())
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: false }))

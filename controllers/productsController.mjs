@@ -63,11 +63,7 @@ export const addProduct = async (req, res) => {
       name : req.body.name,
       description: req.body.description,
       price: req.body.price,
-      //image: {
-      //  name: req.file.originalname,
-      //  data: req.file.buffer,
-      //  contentType: req.file.mimetype,
-      //}
+      imageURL : req.body.imageURL
     })
 
     const newProduct = await product.save()
