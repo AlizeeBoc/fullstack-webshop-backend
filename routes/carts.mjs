@@ -1,3 +1,5 @@
+// We should maybe change the name of userId by "orderId" for a better undestanding of the process;)
+
 import express from "express"
 import Order from "../Models/Order.mjs"
 import Product from "../Models/Product.mjs"
@@ -14,7 +16,7 @@ const cart = {}
 //session and cookie-parser middleware
 router.use(cookieParser())
 router.use(session({
-    secret: 'webshop1234',
+    secret: 'webshop1234',   // This should be hidden and saved as a key in heroku, right?
     resave: false, //don't save the session if not modified
     saveUninitialized: true, //Save new session that have been modified
     cookie: { secure: false } //cookie settings are not secured, for the sake of development(false)
@@ -23,52 +25,57 @@ router.use(session({
 /*------------------------------- Post request to add an Item to cart ----------------------------------*/
 router.post('/order', async (req, res) => {
     try {
-        let userId = req.session.userId
+        let orderId = req.session.orderId
 
-        //generate a new userId if not present in the session
-        if (!userId) {
-            userId = uuidv4();
-            req.session.userId = userId;
-            console.log('Setting userId in session:', userId);
+        //generate a new orderId if not present in the session
+        if (!orderId) {
+            orderId = uuidv4();
+            req.session.orderId = orderId;
+            console.log('Setting orderId in session:', orderId);
         }
 
-        console.log('Generated userId:', userId);
-        const { productId } = req.params
-        const { quantity, chest, waist, hips } = req.body
+        console.log('Generated orderId:', orderId);
+       
+        const { reference, quantity, chest, waist, hips } = req.body
 
-        // Fetch the product based on the productId
-        // const product = await Product.findById(productId)
+        // Récupère produit apd db et vérifie s'il existe
+        const product = await Product.findOne({ reference: reference });
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+          }
         
         //Create a cart if the user doesn't have one
-        if(!cart[userId]) {
-            cart[userId] = []
+        if(!cart[orderId]) {
+            cart[orderId] = []
         }
 
-        // Create an arrow function to create cart items
-        const createCartItem = (userId, reference, quantity, chest, waist, hips, price, image) => ({
-            userId,
+        // function that create cart items
+        const createCartItem = (orderId, reference, quantity, chest, waist, hips, price, totalPrice) => ({
+            orderId,
             reference,
             quantity,
             chest,
             waist,
             hips,
             price,
-            image
+            totalPrice
         })
 
         //create a new cart item and add it to the user's cart
-        const cartItem = createCartItem({
-            userId: userId,
-            reference: Product.reference,
-            quantity,
-            chest,
-            waist,
-            hips,
-            price: Product.price,
-            image: Product.image
-        })
-        cart[userId].push(cartItem)
-        // await cartItem.save() //add item to the database
+        const cartItem = createCartItem(
+            orderId,
+            product.reference,
+            req.body.quantity,
+            req.body.chest,
+            req.body.chest,
+            req.body.hips,
+            product.price,
+            product.price * quantity
+        )
+
+        cart[orderId].push(cartItem)
+        // Fixer le problème du log undefined (origine non trouvée)
+        console.log(cartItem)
         res.json({ msg: 'Item added to cart' })
     } catch (error) {
         console.error('Error adding item to cart:', error)
@@ -81,10 +88,10 @@ router.post('/order', async (req, res) => {
 router.get('/',async(req, res) => {
     try {
 
-        const userId = req.session.userId;
-        console.log('Retrieved userId from session:', userId);
+        const orderId = req.session.orderId;
+        console.log('Retrieved orderId from session:', orderId);
         
-        const userCartItems = cart[userId] || []
+        const userCartItems = cart[orderId] || []
 
         console.log('Fetched cart items:', userCartItems)
 
@@ -98,41 +105,46 @@ router.get('/',async(req, res) => {
 /*------------------------------- Post request to checkout and place an order  ---------------------------*/
 router.post('/order/checkout', async (req, res) => {
     try {
-        const userId = req.session.userId;
-        const cartItems = cart[userId] || [];
-        console.log('Generated userId:', userId);
+        const orderId = req.session.orderId;
+        const cartItems = cart[orderId] || [];
+        console.log('Generated orderId:', orderId);
+
         if (cartItems.length === 0) {
             return res.status(400).json({ message: 'Cart is empty' })
             
         }
 
          // Extract order details from the request body
-        const { status, firstname, lastname, email, address, bankDetails } = req.body
+        const { firstname, lastname, email, address } = req.body
+
+        //const total = cartItems.reduce((acc, item) => acc + item.totalPrice, 0)
 
         //create order items based on the cart items
         const orderItems = cartItems.map(cartItem => ({
-            reference: cartItem.reference,
-            waist: cartItem.waist,
+            product: cartItem.reference,
+            quantity : cartItem.quantity,
             chest: cartItem.chest,
+            waist: cartItem.waist,
             hips: cartItem.hips,
             price: cartItem.price,
-            image: cartItem.image
+            totalPrice : cartItem.totalPrice
         }));
-
+        console.log("log of orderItems :", orderItems);
+    
         // Create a new Order instance and save it to the database
         const order = new Order({
-            status,
             firstname,
             lastname,
             email,
             address,
-            bankDetails,
-            items: orderItems
+            items : [...orderItems]
         });
+
+        console.log("log of Order :", order);
 
         await order.save()
         // Clear the user's cart after successful checkout
-        cart[userId] = []
+        cart[orderId] = []
         
         res.status(201).json({ message: 'Order placed successfully' });
     } catch (error) {
@@ -141,6 +153,7 @@ router.post('/order/checkout', async (req, res) => {
     }
 })
 
+// reste a calculer le totalOrder = all totalPrice + shipping + add paypal
 
 
 export default router

@@ -47,7 +47,6 @@ export const addProduct = async (req, res) => {
       return res.status(500).send("Image upload failed")
     }
 
-    //  manque info session storage
   try {
     const referenceExists = await Product.findOne({ reference: req.body.reference });
     if (referenceExists) {
@@ -64,11 +63,11 @@ export const addProduct = async (req, res) => {
       name : req.body.name,
       description: req.body.description,
       price: req.body.price,
-      image: {
-        name: req.file.originalname,
-        data: req.file.buffer,
-        contentType: req.file.mimetype,
-      }
+      //image: {
+      //  name: req.file.originalname,
+      //  data: req.file.buffer,
+      //  contentType: req.file.mimetype,
+      //}
     })
 
     const newProduct = await product.save()
