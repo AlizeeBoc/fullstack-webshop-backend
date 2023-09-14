@@ -1,14 +1,13 @@
-// We should maybe change the name of userId by "orderId" for a better undestanding of the process;)
-
 import express from "express"
 import Order from "../Models/Order.mjs"
 import Product from "../Models/Product.mjs"
 import session from "express-session"
 import cookieParser from "cookie-parser"
 import { v4 as uuidv4 } from "uuid"
+import Stripe from "stripe"
 
-//express router instance
 const router = express()
+
 //an object to store cart items for different users
 const cart = {}
 
@@ -23,7 +22,10 @@ router.use(
   })
 )
 
+//////////////////////   Toi qui entre ici abandonne tout espoir ///////////////////////
+
 /*------------------------------- Post request to add an Item to cart ----------------------------------*/
+
 router.post("/order", async (req, res) => {
   try {
     let orderId = req.session.orderId
@@ -84,7 +86,6 @@ router.post("/order", async (req, res) => {
     )
 
     cart[orderId].push(cartItem)
-    // Fixer le problème du log undefined (origine non trouvée)
     console.log(cartItem)
     res.json({ msg: "Item added to cart" })
   } catch (error) {
@@ -92,6 +93,52 @@ router.post("/order", async (req, res) => {
     res.status(500).json({ message: "Internal server error" })
   }
 })
+
+// Tentative  de stripe checkout session //
+
+const YOUR_DOMAIN = "http://localhost:4242"
+
+router.post("/create-checkout-session", async (req, res) => {
+  const stripe = new Stripe(process.env.STRIPE_KEY, {
+    apiVersion: "2023-08-16",
+  })
+  try {
+    const orderId = req.session.orderId
+    const cartItems = cart[orderId] || []
+
+    if (cartItems.length === 0) {
+      return res.status(400).json({ message: "Cart is empty" })
+    }
+
+    // Create line_items based on the items in the cart
+    const line_items = cartItems.map((cartItem) => ({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: cartItem.reference,
+        },
+        unit_amount: cartItem.price * 100, // 'Cause in cents
+      },
+      quantity: cartItem.quantity,
+    }))
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card", "paypal"],
+      line_items,
+      mode: "payment",
+      success_url: `${YOUR_DOMAIN}?success=true`,
+      cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+    })
+
+    req.session.cartItems = cartItems
+    console.log(session.url)
+    res.redirect(303, session.url)
+  } catch (error) {
+    console.error("Error creating checkout session:", error)
+    res.status(500).json({ message: "Internal server error" })
+  }
+})
+//
 
 /*---------------------------- Get request to retrieve cart items of the user ---------------------------*/
 router.get("/", async (req, res) => {
@@ -114,7 +161,7 @@ router.get("/", async (req, res) => {
 router.post("/order/checkout", async (req, res) => {
   try {
     const orderId = req.session.orderId
-    const cartItems = cart[orderId] || []
+    const cartItems = req.session.cartItems || []
     console.log("Generated orderId:", orderId)
 
     if (cartItems.length === 0) {
@@ -160,8 +207,8 @@ router.post("/order/checkout", async (req, res) => {
 
     await order.save()
     // Clear the user's cart after successful checkout
-    cart[orderId] = []
-
+    req.session.cartItems = []
+    //res.redirect('/success')
     res.status(201).json({ message: "Order placed successfully" })
   } catch (error) {
     console.error("Error placing order:", error)
