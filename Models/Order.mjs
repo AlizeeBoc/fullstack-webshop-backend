@@ -47,11 +47,11 @@ const ordersSchema = new Schema({
       },
     },
   ],
-  shippingFee: {
-    type: Number,
-    default: 15,
-  },
-  //total
+  //shippingFee: {
+  //  type: Number,
+  //  default: 15,
+  //},
+  ////total
 });
 
 const Order = mongoose.model('orders', ordersSchema);
