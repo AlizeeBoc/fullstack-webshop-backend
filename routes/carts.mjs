@@ -92,7 +92,7 @@ router.post("/order", async (req, res) => {
   }
 })
 
-// Tentative  de stripe checkout session //
+// -----------------------  Stripe checkout session -----------------------//
 
 const YOUR_DOMAIN = "http://localhost:4242"
 
@@ -109,11 +109,7 @@ router.post("/create-checkout-session", async (req, res) => {
     }
 
     // Extract customer details from the request body
-    const { firstname, lastname, email, address } = req.body;
-
-    // Add a fixed shipping fee of 12 euros
-    const shippingFee = 12.0;
-
+    const { firstname, lastname, email, address } = req.body
 
     // Create line_items based on the items in the cart
     const line_items = cartItems.map((cartItem) => ({
@@ -127,17 +123,19 @@ router.post("/create-checkout-session", async (req, res) => {
       quantity: cartItem.quantity,
     }))
 
+    //// Add a fixed shipping fee of 12 euros
     line_items.push({
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: "Shipping Fee",
-          },
-          unit_amount: 1200, // 12 euros in cents
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: "Shipping Fee",
         },
-        quantity: 1,
-      });
+        unit_amount: 1200,
+      },
+      quantity: 1,
+    })
 
+    // Create a Stripe session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card", "paypal"],
       line_items,
@@ -145,7 +143,6 @@ router.post("/create-checkout-session", async (req, res) => {
       success_url: `${YOUR_DOMAIN}?succes=true`, //create a succes payment page
       cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     })
-   
 
     //create order items based on the cart items
     const orderItems = cartItems.map((cartItem) => ({
@@ -160,33 +157,37 @@ router.post("/create-checkout-session", async (req, res) => {
     console.log("log of orderItems :", orderItems)
 
     const order = new Order({
-        firstname,
-        lastname,
-        email,
-        address,
-        status: "en attente de paiement",
-        items: cartItems.map((cartItem) => ({
-          product: cartItem.reference,
-          quantity: cartItem.quantity,
-          chest: cartItem.chest,
-          waist: cartItem.waist,
-          hips: cartItem.hips,
-          price: cartItem.price,
-          totalPrice: cartItem.totalPrice,
-        })),
-      });
-
+      firstname,
+      lastname,
+      email,
+      address,
+      status: "en attente de paiement",
+      items: cartItems.map((cartItem) => ({
+        product: cartItem.reference,
+        quantity: cartItem.quantity,
+        chest: cartItem.chest,
+        waist: cartItem.waist,
+        hips: cartItem.hips,
+        price: cartItem.price,
+        totalPrice: cartItem.totalPrice,
+      })),
+    })
+    
+    //And save them in the database
     await order.save()
-  
+
     req.session.cartItems = cartItems
     console.log(session.url)
     res.redirect(303, session.url)
+
   } catch (error) {
     console.error("Error creating checkout session:", error)
     res.status(500).json({ message: "Internal server error" })
   }
 })
-//
+
+
+
 
 /*---------------------------- Get request to retrieve cart items of the user ---------------------------*/
 router.get("/", async (req, res) => {
@@ -205,66 +206,68 @@ router.get("/", async (req, res) => {
   }
 })
 
+
+
 /*------------------------------- Post request to checkout and place an order  ---------------------------*/
-router.post("/order/checkout", async (req, res) => {
-  try {
-    const orderId = req.session.orderId
-    const cartItems = req.session.cartItems || []
-    console.log("Generated orderId:", orderId)
+//router.post("/order/checkout", async (req, res) => {
+//  try {
+//    const orderId = req.session.orderId
+//    const cartItems = req.session.cartItems || []
+//    console.log("Generated orderId:", orderId)
 
-    if (cartItems.length === 0) {
-      return res.status(400).json({ message: "Cart is empty" })
-    }
+//    if (cartItems.length === 0) {
+//      return res.status(400).json({ message: "Cart is empty" })
+//    }
 
-    // Extract order details from the request body
-    const { firstname, lastname, email, address } = req.body
+//    // Extract order details from the request body
+//    const { firstname, lastname, email, address } = req.body
 
-    //create order items based on the cart items
-    const orderItems = cartItems.map((cartItem) => ({
-      product: cartItem.reference,
-      quantity: cartItem.quantity,
-      chest: cartItem.chest,
-      waist: cartItem.waist,
-      hips: cartItem.hips,
-      price: cartItem.price,
-      totalPrice: cartItem.totalPrice,
-    }))
-    console.log("log of orderItems :", orderItems)
+//    //create order items based on the cart items
+//    const orderItems = cartItems.map((cartItem) => ({
+//      product: cartItem.reference,
+//      quantity: cartItem.quantity,
+//      chest: cartItem.chest,
+//      waist: cartItem.waist,
+//      hips: cartItem.hips,
+//      price: cartItem.price,
+//      totalPrice: cartItem.totalPrice,
+//    }))
+//    console.log("log of orderItems :", orderItems)
 
-    //Total price (total amount of cart + shipping)
-    const sumTotal = (arr) =>
-      arr.reduce(
-        (sum, { totalPrice, quantity }) => sum + totalPrice * quantity,
-        0
-      )
-    const cartTotal = sumTotal(cartItems)
-    const shippingFee = 15.0
-    const total = cartTotal + shippingFee
-    console.log("Go checkout : ", total)
+//    //Total price (total amount of cart + shipping)
+//    const sumTotal = (arr) =>
+//      arr.reduce(
+//        (sum, { totalPrice, quantity }) => sum + totalPrice * quantity,
+//        0
+//      )
+//    const cartTotal = sumTotal(cartItems)
+//    const shippingFee = 15.0
+//    const total = cartTotal + shippingFee
+//    console.log("Go checkout : ", total)
 
-    // Create a new Order instance and save it to the database
-    const order = new Order({
-      firstname,
-      lastname,
-      email,
-      address,
-      items: [...orderItems],
-    })
+//    // Create a new Order instance and save it to the database
+//    const order = new Order({
+//      firstname,
+//      lastname,
+//      email,
+//      address,
+//      items: [...orderItems],
+//    })
 
-    console.log("log of Order :", order)
+//    console.log("log of Order :", order)
 
-    await order.save()
-    // Clear the user's cart after successful checkout
-    req.session.cartItems = []
-    //res.redirect('/success')
-    res.status(201).json({ message: "Order placed successfully" })
-  } catch (error) {
-    console.error("Error placing order:", error)
-    res.status(500).json({ message: "Internal server error" })
-  }
-})
+//    await order.save()
+//    // Clear the user's cart after successful checkout
+//    req.session.cartItems = []
+//    //res.redirect('/success')
+//    res.status(201).json({ message: "Order placed successfully" })
+//  } catch (error) {
+//    console.error("Error placing order:", error)
+//    res.status(500).json({ message: "Internal server error" })
+//  }
+//})
 
-// reste a calculer le totalOrder = all totalPrice + shipping + add paypal
+//// reste a calculer le totalOrder = all totalPrice + shipping + add paypal
 
 export default router
 
