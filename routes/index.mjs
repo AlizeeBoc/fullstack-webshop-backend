@@ -14,7 +14,4 @@ router.use('/users', usersRouter)
 import contactEmailRouter from "./email.mjs"
 router.use('/contact', contactEmailRouter)
 
-import stripeRouter from "./stripe.mjs"
-router.use('/payment', stripeRouter)
-
 export default router
