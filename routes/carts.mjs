@@ -22,8 +22,6 @@ router.use(
   })
 )
 
-//////////////////////   Toi qui entre ici abandonne tout espoir ///////////////////////
-
 /*------------------------------- Post request to add an Item to cart ----------------------------------*/
 
 router.post("/order", async (req, res) => {
@@ -117,7 +115,7 @@ router.post("/create-checkout-session", async (req, res) => {
         product_data: {
           name: cartItem.reference,
         },
-        unit_amount: cartItem.price * 100, // 'Cause in cents
+        unit_amount: parseInt(cartItem.price * 100), // 'Cause in cents
       },
       quantity: cartItem.quantity,
     }))
@@ -126,7 +124,7 @@ router.post("/create-checkout-session", async (req, res) => {
       payment_method_types: ["card", "paypal"],
       line_items,
       mode: "payment",
-      success_url: `${YOUR_DOMAIN}?success=true`,
+      success_url: `${YOUR_DOMAIN}/?succes=true`, //create a succes payment page
       cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     })
 
