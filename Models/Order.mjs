@@ -24,6 +24,7 @@ const ordersSchema = new Schema({
     type: String,
     required: true,
   },
+  status: String,
   items: [
     {
       product: {

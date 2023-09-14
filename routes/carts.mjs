@@ -108,6 +108,11 @@ router.post("/create-checkout-session", async (req, res) => {
       return res.status(400).json({ message: "Cart is empty" })
     }
 
+    // Extract customer details from the request body
+    const { firstname, lastname, email, address } = req.body;
+
+    // Add a fixed shipping fee of 12 euros
+    const shippingFee = 12.0;
 
 
     // Create line_items based on the items in the cart
@@ -122,6 +127,17 @@ router.post("/create-checkout-session", async (req, res) => {
       quantity: cartItem.quantity,
     }))
 
+    line_items.push({
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: "Shipping Fee",
+          },
+          unit_amount: 1200, // 12 euros in cents
+        },
+        quantity: 1,
+      });
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card", "paypal"],
       line_items,
@@ -129,7 +145,7 @@ router.post("/create-checkout-session", async (req, res) => {
       success_url: `${YOUR_DOMAIN}?succes=true`, //create a succes payment page
       cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     })
-    const { firstname, lastname, email, address } = req.body
+   
 
     //create order items based on the cart items
     const orderItems = cartItems.map((cartItem) => ({
@@ -143,29 +159,22 @@ router.post("/create-checkout-session", async (req, res) => {
     }))
     console.log("log of orderItems :", orderItems)
 
-    //Total price (total amount of cart + shipping)
-    const sumTotal = (arr) =>
-      arr.reduce(
-        (sum, { totalPrice, quantity }) => sum + totalPrice * quantity,
-        0
-      )
-
-      const total = sumTotal(cartItems)
-    //const cartTotal = sumTotal(cartItems)
-    //const shippingFee = 15.0
-    //const total = cartTotal + shippingFee
-    console.log("Go checkout : ", total)
-
-    // Create a new Order instance and save it to the database
     const order = new Order({
-      firstname,
-      lastname,
-      email,
-      address,
-      items: [...orderItems],
-    })
-
-    console.log("log of Order :", order)
+        firstname,
+        lastname,
+        email,
+        address,
+        status: "en attente de paiement",
+        items: cartItems.map((cartItem) => ({
+          product: cartItem.reference,
+          quantity: cartItem.quantity,
+          chest: cartItem.chest,
+          waist: cartItem.waist,
+          hips: cartItem.hips,
+          price: cartItem.price,
+          totalPrice: cartItem.totalPrice,
+        })),
+      });
 
     await order.save()
   
