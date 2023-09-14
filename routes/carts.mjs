@@ -22,6 +22,7 @@ router.use(
   })
 )
 
+//////////////////////   Toi qui entre ici abandonne tout espoir ///////////////////////
 
 /*------------------------------- Post request to add an Item to cart ----------------------------------*/
 
@@ -125,7 +126,7 @@ router.post("/create-checkout-session", async (req, res) => {
       payment_method_types: ["card", "paypal"],
       line_items,
       mode: "payment",
-      success_url: `${YOUR_DOMAIN}/cart/order/checkout`,
+      success_url: `${YOUR_DOMAIN}?success=true`,
       cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     })
 
