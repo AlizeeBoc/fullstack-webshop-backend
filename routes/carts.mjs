@@ -162,6 +162,7 @@ router.post("/create-checkout-session", async (req, res) => {
       lastname,
       email,
       address,
+      status:"Awaiting payment",
       items: [...orderItems],
     })
 
