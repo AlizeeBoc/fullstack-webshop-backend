@@ -108,6 +108,8 @@ router.post("/create-checkout-session", async (req, res) => {
       return res.status(400).json({ message: "Cart is empty" })
     }
 
+
+
     // Create line_items based on the items in the cart
     const line_items = cartItems.map((cartItem) => ({
       price_data: {
@@ -124,10 +126,49 @@ router.post("/create-checkout-session", async (req, res) => {
       payment_method_types: ["card", "paypal"],
       line_items,
       mode: "payment",
-      success_url: `${YOUR_DOMAIN}/?succes=true`, //create a succes payment page
+      success_url: `${YOUR_DOMAIN}?succes=true`, //create a succes payment page
       cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     })
+    const { firstname, lastname, email, address } = req.body
 
+    //create order items based on the cart items
+    const orderItems = cartItems.map((cartItem) => ({
+      product: cartItem.reference,
+      quantity: cartItem.quantity,
+      chest: cartItem.chest,
+      waist: cartItem.waist,
+      hips: cartItem.hips,
+      price: cartItem.price,
+      totalPrice: cartItem.totalPrice,
+    }))
+    console.log("log of orderItems :", orderItems)
+
+    //Total price (total amount of cart + shipping)
+    const sumTotal = (arr) =>
+      arr.reduce(
+        (sum, { totalPrice, quantity }) => sum + totalPrice * quantity,
+        0
+      )
+
+      const total = sumTotal(cartItems)
+    //const cartTotal = sumTotal(cartItems)
+    //const shippingFee = 15.0
+    //const total = cartTotal + shippingFee
+    console.log("Go checkout : ", total)
+
+    // Create a new Order instance and save it to the database
+    const order = new Order({
+      firstname,
+      lastname,
+      email,
+      address,
+      items: [...orderItems],
+    })
+
+    console.log("log of Order :", order)
+
+    await order.save()
+  
     req.session.cartItems = cartItems
     console.log(session.url)
     res.redirect(303, session.url)
