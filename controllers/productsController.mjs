@@ -15,6 +15,7 @@ export const getAllProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
   try {
     const reference = req.params.productId
+    console.log(reference);
     const product = await Product.find({ reference })
     if (!product) {
       res.status(404).json({ error: "Product not find" })

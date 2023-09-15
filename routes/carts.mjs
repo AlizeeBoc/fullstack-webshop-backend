@@ -5,6 +5,8 @@ import session from "express-session"
 import cookieParser from "cookie-parser"
 import { v4 as uuidv4 } from "uuid"
 import Stripe from "stripe"
+import dotenv from "dotenv"
+dotenv.config()
 
 const router = express()
 
@@ -15,7 +17,7 @@ const cart = {}
 router.use(cookieParser())
 router.use(
   session({
-    secret: "webshop1234", // This should be hidden and saved as a key in heroku, right?
+    secret: process.env.SESSION_SECRET, // This should be hidden and saved as a key in heroku, right?
     resave: false, //don't save the session if not modified
     saveUninitialized: true, //Save new session that have been modified
     cookie: { secure: false }, //cookie settings are not secured, for the sake of development(false)
