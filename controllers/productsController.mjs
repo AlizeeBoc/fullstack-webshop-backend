@@ -1,5 +1,5 @@
 import Product from "../Models/Product.mjs"
-import multer from "multer"
+
 // GET all products
 export const getAllProducts = async (req, res) => {
   try {
@@ -27,27 +27,9 @@ export const getProductById = async (req, res) => {
   }
 }
 
-//storage
-const Storage = multer.diskStorage({
-  destination: "uploads",
-  filename: (req, file, cb) => {
-    cb(null, file.originalname)
-  }
-})
-
-const upload = multer({
-  storage: Storage
-}).single("productImage")
 
 // Add a product
 export const addProduct = async (req, res) => {
-
-  upload(req, res, async (err) => {
-    if (err) {
-      console.error("Error uploading image:", err);
-      return res.status(500).send("Image upload failed")
-    }
-
   try {
     const referenceExists = await Product.findOne({ reference: req.body.reference });
     if (referenceExists) {
@@ -73,7 +55,6 @@ export const addProduct = async (req, res) => {
     console.error("Error creating the product", err)
     res.status(500).send("Internal Server Error")
   }
-})
 }
 
 // DELETE a product

@@ -17,7 +17,7 @@ const cart = {}
 router.use(cookieParser())
 router.use(
   session({
-    secret: process.env.SESSION_SECRET, // This should be hidden and saved as a key in heroku, right?
+    secret: process.env.SESSION_SECRET, 
     resave: false, //don't save the session if not modified
     saveUninitialized: true, //Save new session that have been modified
     cookie: { secure: false }, //cookie settings are not secured, for the sake of development(false)
@@ -209,69 +209,6 @@ router.get("/", async (req, res) => {
 })
 
 
-
-/*------------------------------- Post request to checkout and place an order  ---------------------------*/
-//router.post("/order/checkout", async (req, res) => {
-//  try {
-//    const orderId = req.session.orderId
-//    const cartItems = req.session.cartItems || []
-//    console.log("Generated orderId:", orderId)
-
-//    if (cartItems.length === 0) {
-//      return res.status(400).json({ message: "Cart is empty" })
-//    }
-
-//    // Extract order details from the request body
-//    const { firstname, lastname, email, address } = req.body
-
-//    //create order items based on the cart items
-//    const orderItems = cartItems.map((cartItem) => ({
-//      product: cartItem.reference,
-//      quantity: cartItem.quantity,
-//      chest: cartItem.chest,
-//      waist: cartItem.waist,
-//      hips: cartItem.hips,
-//      price: cartItem.price,
-//      totalPrice: cartItem.totalPrice,
-//    }))
-//    console.log("log of orderItems :", orderItems)
-
-//    //Total price (total amount of cart + shipping)
-//    const sumTotal = (arr) =>
-//      arr.reduce(
-//        (sum, { totalPrice, quantity }) => sum + totalPrice * quantity,
-//        0
-//      )
-//    const cartTotal = sumTotal(cartItems)
-//    const shippingFee = 15.0
-//    const total = cartTotal + shippingFee
-//    console.log("Go checkout : ", total)
-
-//    // Create a new Order instance and save it to the database
-//    const order = new Order({
-//      firstname,
-//      lastname,
-//      email,
-//      address,
-//      items: [...orderItems],
-//    })
-
-//    console.log("log of Order :", order)
-
-//    await order.save()
-//    // Clear the user's cart after successful checkout
-//    req.session.cartItems = []
-//    //res.redirect('/success')
-//    res.status(201).json({ message: "Order placed successfully" })
-//  } catch (error) {
-//    console.error("Error placing order:", error)
-//    res.status(500).json({ message: "Internal server error" })
-//  }
-//})
-
-//// reste a calculer le totalOrder = all totalPrice + shipping + add paypal
-
 export default router
 
-//npm install express express-session cookie-parser
-//npm install uuid
+

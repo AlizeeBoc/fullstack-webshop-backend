@@ -6,10 +6,6 @@ import dotenv from "dotenv"
 import bodyParser from "body-parser"
 import indexRouter from "./routes/index.mjs"
 
-//if (process.env.NODE_ENV !== "production") {
-//    import("dotenv").then(dotenv => dotenv.config());
-//  }
-
 dotenv.config()
 
 const port = process.env.PORT || 3200
@@ -20,9 +16,6 @@ app.use(bodyParser.urlencoded({ limit: "10mb", extended: false }))
 app.use(cors({
   origin: ["https://ashmademoiselle-8623d0938879.herokuapp.com/", "http://localhost:3000"] 
 }))
-
-// Serve images from the "uploads" directory
-app.use("/uploads", express.static("uploads"));
 
 app.use("/", indexRouter)
 
@@ -48,14 +41,4 @@ app.listen(port, () => {
   console.log(`App listening on port ${port}`)
 })
 
-////////
-/*
-npm init -y
-npm install express
-npm install --save-dev nodemon
-npm install mongoose
-npm install mongodb
-npm i dotenv
-npm install multer
 
-*/
