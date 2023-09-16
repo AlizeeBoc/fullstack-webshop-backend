@@ -258,13 +258,14 @@ router.post("/order/checkout", async (req, res) => {
 })
 
 /*------------------------------ stripe webhook ------------------------------------------*/
-router.post("/stripe-webhook", bodyParser.raw({type: 'application/json'}), async(req, res) => {
+router.post("/stripe-webhook/:orderId", bodyParser.raw({type: 'application/json'}), async(req, res) => {
   const event = req.body
+  const orderId = req.params.orderId
+
 
   switch(event.type) {
     case 'payment_intent.succeeded':
       // const paymentIntent = event.data.object
-      const orderId = req.params.orderId
 
       // Update the order status to "payment success"
       await Order.updateOne({ _id: orderId }, 
