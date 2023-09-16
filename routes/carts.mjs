@@ -7,6 +7,8 @@ import { v4 as uuidv4 } from "uuid"
 import Stripe from "stripe"
 import dotenv from "dotenv"
 dotenv.config()
+import authenticateUser from "../middleware/authenticateUser.mjs"
+import checkRole from "../middleware/checkRole.mjs"
 
 const router = express()
 
@@ -189,24 +191,51 @@ router.post("/create-checkout-session", async (req, res) => {
 })
 
 
+router.get('/orders', authenticateUser, checkRole(["admin"]), async (req, res)=> {
+  try {
+    const orders = await Order.find()
+    res.json(orders)
+  } catch (err) {
+    console.error("Error while retrieving orders :", err)
+    res.status(500).json({ error: "Server error"})
+  }
+})
+
+router.get('/orders/:orderId', authenticateUser, checkRole(["admin"]), async (req, res) => {
+  try {
+    const _id = req.params.orderId
+    const order = await Order.find({ _id })
+
+    if (!order) {
+      res.status(404).json({ error: 'Order not found'})
+    }
+
+    res.json(order)
+  } catch (err) {
+    console.error('Error while retrieving the order')
+    res.status(500).json( { error: "Order not found"})
+  }
+})
+
+
 
 
 /*---------------------------- Get request to retrieve cart items of the user ---------------------------*/
-router.get("/", async (req, res) => {
-  try {
-    const orderId = req.session.orderId
-    console.log("Retrieved orderId from session:", orderId)
+//router.get("/", async (req, res) => {
+//  try {
+//    const orderId = req.session.orderId
+//    console.log("Retrieved orderId from session:", orderId)
 
-    const userCartItems = cart[orderId] || []
+//    const userCartItems = cart[orderId] || []
 
-    console.log("Fetched cart items:", userCartItems)
+//    console.log("Fetched cart items:", userCartItems)
 
-    res.json(userCartItems)
-  } catch (error) {
-    console.error("Error fetching cart:", error)
-    res.status(500).json({ message: "Internal server error" })
-  }
-})
+//    res.json(userCartItems)
+//  } catch (error) {
+//    console.error("Error fetching cart:", error)
+//    res.status(500).json({ message: "Internal server error" })
+//  }
+//})
 
 
 export default router

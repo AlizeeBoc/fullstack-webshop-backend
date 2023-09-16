@@ -18,7 +18,7 @@ export const getProductById = async (req, res) => {
     console.log(reference);
     const product = await Product.find({ reference })
     if (!product) {
-      res.status(404).json({ error: "Product not find" })
+      res.status(404).json({ error: "Product not found" })
     }
     res.json(product)
   } catch (err) {
@@ -63,7 +63,7 @@ export const deleteProduct = async (req, res) => {
   try {
     const removedProduct = await Product.deleteOne({ reference : productId})
     if (removedProduct.deletedCount === 0) {
-      return res.status(404).json({error : 'Product not find'})
+      return res.status(404).json({error : 'Product not found'})
     }
     res.json({ message : 'Product deleted successfully'})
   } catch (error) {
