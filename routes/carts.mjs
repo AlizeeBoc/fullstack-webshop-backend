@@ -5,6 +5,7 @@ import session from "express-session"
 import cookieParser from "cookie-parser"
 import { v4 as uuidv4 } from "uuid"
 import Stripe from "stripe"
+import bodyParser from "body-parser"
 
 const router = express()
 
@@ -92,7 +93,7 @@ router.post("/order", async (req, res) => {
   }
 })
 
-// Tentative  de stripe checkout session //
+//*---------- Tentative  de stripe checkout session ----------*//
 
 const YOUR_DOMAIN = "http://localhost:4242"
 
@@ -126,7 +127,7 @@ router.post("/create-checkout-session", async (req, res) => {
       payment_method_types: ["card", "paypal"],
       line_items,
       mode: "payment",
-      success_url: `${YOUR_DOMAIN}?succes=true`, //create a succes payment page
+      success_url: `${YOUR_DOMAIN}?success=true`, //create a succes payment page
       cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     })
     const { firstname, lastname, email, address } = req.body
@@ -158,6 +159,7 @@ router.post("/create-checkout-session", async (req, res) => {
 
     // Create a new Order instance and save it to the database
     const order = new Order({
+      status: "waiting for payment", //initializing payment status
       firstname,
       lastname,
       email,
@@ -255,7 +257,41 @@ router.post("/order/checkout", async (req, res) => {
   }
 })
 
-// reste a calculer le totalOrder = all totalPrice + shipping + add paypal
+/*------------------------------ stripe webhook ------------------------------------------*/
+router.post("/stripe-webhook", bodyParser.raw({type: 'application/json'}), async(req, res) => {
+  const event = req.body
+
+  switch(event.type) {
+    case 'payment_intent.succeeded':
+      // const paymentIntent = event.data.object
+      const orderId = req.params.orderId
+
+      // Update the order status to "payment success"
+      await Order.updateOne({ _id: orderId }, 
+        { status: "payment success" })
+
+        console.log("payment was successful")
+        console.log("log of order:", Order)
+    break;
+
+    case 'payment_intent.payment_failed':
+      // Update the order status to "payment success"
+      await Order.updateOne({ _id: orderId }, 
+        { status: "payment failed" })
+
+        console.log("payment failed")
+    break;
+
+    default:
+      console.log(`unhandled event type ${event.type}`)
+    
+  }
+
+  res.json({received: true})
+
+})
+
+
 
 export default router
 
