@@ -4,10 +4,10 @@ import Product from "../Models/Product.mjs"
 const { Schema, Decimal128 } = mongoose;
 
 const ordersSchema = new Schema({
-  //status: {
-  //  type: String,
-  //  required: true,
-  //},
+  status: {
+   type: String,
+   required: true,
+  },
   firstname: {
     type: String,
     required: true,
