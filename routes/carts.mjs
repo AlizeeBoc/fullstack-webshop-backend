@@ -239,39 +239,39 @@ router.get("/", async (req, res) => {
 })
 
 /*------------------------------ stripe webhook ------------------------------------------*/
-router.post("/stripe-webhook", bodyParser.raw({type: 'application/json'}), async(req, res) => {
-  const event = req.body
-  const orderId = req.body.orderId
+// router.post("/stripe-webhook", bodyParser.raw({type: 'application/json'}), async(req, res) => {
+//   const event = req.body
+//   const orderId = req.body.orderId
 
 
-  switch(event.type) {
-    case 'payment_intent.succeeded':
-      // const paymentIntent = event.data.object
+//   switch(event.type) {
+//     case 'payment_intent.succeeded':
+//       // const paymentIntent = event.data.object
 
-      // Update the order status to "payment success"
-      await Order.updateOne({ _id: orderId }, 
-        { status: "payment success" })
-        console.log(orderId)
-        console.log("payment was successful")
-        console.log("log of order:", Order)
-    break;
+//       // Update the order status to "payment success"
+//       await Order.updateOne({ _id: orderId }, 
+//         { status: "payment success" })
+//         console.log(orderId)
+//         console.log("payment was successful")
+//         console.log("log of order:", Order)
+//     break;
 
-    case 'payment_intent.payment_failed':
-      // Update the order status to "payment success"
-      await Order.updateOne({ _id: orderId }, 
-        { status: "payment failed" })
+//     case 'payment_intent.payment_failed':
+//       // Update the order status to "payment success"
+//       await Order.updateOne({ _id: orderId }, 
+//         { status: "payment failed" })
 
-        console.log("payment failed")
-    break;
+//         console.log("payment failed")
+//     break;
 
-    default:
-      console.log(`unhandled event type ${event.type}`)
+//     default:
+//       console.log(`unhandled event type ${event.type}`)
     
-  }
+//   }
 
-  res.json({received: true})
+//   res.json({received: true})
 
-})
+// })
 
 
 

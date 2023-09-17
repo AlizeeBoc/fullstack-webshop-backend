@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: false }))
 //frontend URL
 app.use(cors({
-  origin: ["https://ashmademoiselle-8623d0938879.herokuapp.com/", "http://localhost:3000", "https://ash-madam-b5c18bbfe054.herokuapp.com/"]
+  origin: ["https://ashmademoiselle-8623d0938879.herokuapp.com/", "http://localhost:3000"]
 
 }))
 
