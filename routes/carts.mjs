@@ -221,21 +221,21 @@ router.get('/orders/:orderId', authenticateUser, checkRole(["admin"]), async (re
 
 
 /*---------------------------- Get request to retrieve cart items of the user ---------------------------*/
-//router.get("/", async (req, res) => {
-//  try {
-//    const orderId = req.session.orderId
-//    console.log("Retrieved orderId from session:", orderId)
+router.get("/", async (req, res) => {
+  try {
+    const orderId = req.session.orderId
+    console.log("Retrieved orderId from session:", orderId)
 
-//    const userCartItems = cart[orderId] || []
+    const userCartItems = cart[orderId] || []
 
-//    console.log("Fetched cart items:", userCartItems)
+    console.log("Fetched cart items:", userCartItems)
 
-//    res.json(userCartItems)
-//  } catch (error) {
-//    console.error("Error fetching cart:", error)
-//    res.status(500).json({ message: "Internal server error" })
-//  }
-//})
+    res.json(userCartItems)
+  } catch (error) {
+    console.error("Error fetching cart:", error)
+    res.status(500).json({ message: "Internal server error" })
+  }
+})
 
 
 export default router
