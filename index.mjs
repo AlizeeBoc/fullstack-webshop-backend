@@ -13,11 +13,18 @@ const port = process.env.PORT || 3200
 app.use(express.json())
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: false }))
 //frontend URL
-app.use(cors({
-  origin: ["https://ashmademoiselle-8623d0938879.herokuapp.com/", "http://localhost:3000"]
+//app.use(cors({
+//  origin: ["https://ashmademoiselle-8623d0938879.herokuapp.com/", "http://localhost:3000"]
 
-}))
+//}))
 
+const corsOptions = {
+  origin: "*",
+  methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
+  Credentials: true,
+}
+
+app.use(cors(corsOptions))
 app.use("/", indexRouter)
 
 const username_mongo = process.env.username_mongo
