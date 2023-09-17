@@ -109,9 +109,6 @@ export const getEmployee = async (req, res) => {
   }
 }
 
-// LEFTODO!
-// get a user
-// get all employees
 
 
 

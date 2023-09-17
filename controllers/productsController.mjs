@@ -1,5 +1,5 @@
 import Product from "../Models/Product.mjs"
-import multer from "multer"
+
 // GET all products
 export const getAllProducts = async (req, res) => {
   try {
@@ -15,9 +15,10 @@ export const getAllProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
   try {
     const reference = req.params.productId
+    console.log(reference);
     const product = await Product.find({ reference })
     if (!product) {
-      res.status(404).json({ error: "Product not find" })
+      res.status(404).json({ error: "Product not found" })
     }
     res.json(product)
   } catch (err) {
@@ -26,27 +27,9 @@ export const getProductById = async (req, res) => {
   }
 }
 
-//storage
-const Storage = multer.diskStorage({
-  destination: "uploads",
-  filename: (req, file, cb) => {
-    cb(null, file.originalname)
-  }
-})
-
-const upload = multer({
-  storage: Storage
-}).single("productImage")
 
 // Add a product
 export const addProduct = async (req, res) => {
-
-  upload(req, res, async (err) => {
-    if (err) {
-      console.error("Error uploading image:", err);
-      return res.status(500).send("Image upload failed")
-    }
-
   try {
     const referenceExists = await Product.findOne({ reference: req.body.reference });
     if (referenceExists) {
@@ -72,7 +55,6 @@ export const addProduct = async (req, res) => {
     console.error("Error creating the product", err)
     res.status(500).send("Internal Server Error")
   }
-})
 }
 
 // DELETE a product
@@ -81,7 +63,7 @@ export const deleteProduct = async (req, res) => {
   try {
     const removedProduct = await Product.deleteOne({ reference : productId})
     if (removedProduct.deletedCount === 0) {
-      return res.status(404).json({error : 'Product not find'})
+      return res.status(404).json({error : 'Product not found'})
     }
     res.json({ message : 'Product deleted successfully'})
   } catch (error) {

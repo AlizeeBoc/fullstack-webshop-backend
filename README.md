@@ -1,45 +1,36 @@
-# fullstack-webshop-backend available on [heroku](https://ashmademoiselle-8623d0938879.herokuapp.com/)
+# fullstack-webshop-backend
 
 ### Under construction ...
 
-###### Endpoints for index
-|Endpoint   |Method   |Bearer Token?   |Admin Token?   |Description   |
-| ------------ | ------------ | ------------ | ------------ | ------------ |
-|/products   |GET   |No   |No   |Routes for retrieving product information   |
-|/cart   |GET   |No   |No   |Routes for viewing and modifying the user's shopping cart   |
-|/login   |GET   |No   |No   |Route for admin login and authentication   |
-|/register   |GET   |No   |No   |Routes for admin registration   |
+# Custom Leather Clothing Webshop API
 
-###### Endpoints for products 
+Welcome to the Custom Leather Clothing Webshop API! This API powers our webshop, where you can explore and purchase handcrafted, custom-made leather clothing.
 
-|Endpoint   |Method   |Bearer Token?   |Admin Token?   |Request   |Response   |Model   |
-| ------------ | ------------ | ------------ | ------------ | ------------ | ------------ | ------------ |
-|/product   |GET   |No   |No   |Get all products   |Array of products or error message   |product model   |
-|/product/:productId   |GET   |No   |No   |Get a single product   |product details or error message   |product model   |
-|//products/add-product   |POST   |No   |YES   |Add a product   |product successfully created or error message   |product model   |
-|/product/:productId   |DELETE   |No   |YES   |Delete single product   |A success message if the product is successfully deleted or an error message   |product model   |
-|/product/:productId   |PUT   |No   |YES   |Udate product   |Updated product or error message   |product model   |
+## API Documentation
 
-###### Endpoints for cart 
+For detailed information on how to use the API, please refer to our [API Documentation](https://crimson-crater-276374.postman.co/workspace/5e67af77-fa64-4c9c-8282-f8fa16227a78/folder/28778050-4d4c2c3e-87fc-4d0e-a4c4-7154c04de37c?ctx=documentation).
 
-|Endpoint   |Method   |Bearer Token?   |Admin Token?   |Request   |Response   |Model   |
-| ------------ | ------------ | ------------ | ------------ | ------------ | ------------ | ------------ |
-|/cart/order   |POST   |No   |No   |An object containing: { productId, quantity, chest, waist, hips }   |A success message if the item is successfully added to the cart or an error message in case of failure   |No   |
-|/cart   |GET   |No   |No   |   |An array of cart items retrieved for the user or an error message in case of failure    |No   |
-|/cart/order/checkout   |POST   |No   |No   |An object containing: {status, firstname, lastname, email, address, bankDetails}   |A success message if the order is successfully placed or an error message in case of failure.   |Order  |
+## Deployment
 
-###### Endpoints for register 
+You can access the live deployment of this API on Heroku at the following URL:
+[Custom Leather Clothing Webshop API on Heroku](https://ashmademoiselle-8623d0938879.herokuapp.com/)
 
-|Endpoint   |Method   |Bearer Token?   |Admin Token?   |Request   |Response   |Controller   |Model   |
-| ------------ | ------------ | ------------ | ------------ | ------------ | ------------ | ------------ |------------ |
-|/employee   |POST   |YES   |YES   |employee data including name, email, password   |successful registration message or error   |registeruser   |user   |
-|/admin   |POST   |YES   |YES   |admin data including name, email, password   |successful registration message or error   |registeruser   |user   |
+## Getting Started
 
-###### Endpoints for login 
+To get started with the API, follow these steps:
 
-|Endpoint   |Method   |Bearer Token?   |Admin Token?   |Request   |Response   |Controller   |Model   |
-| ------------ | ------------ | ------------ | ------------ | ------------ | ------------ | ------------ |------------ |
-|/employee   |POST   |YES   |YES   |employee data including email, password   |successful login message, User ID and Access Token or error message   |loginUser   |user   |
-|/admin   |POST   |YES   |YES   |admin data including name, email, password   |successful login message, User ID and Access Token or error message   |loginUser   |user   |
+1. Clone the repository to your local machine using `git clone`.
 
+2. Navigate to the project directory.
 
+3. Initialize a new Node.js project with `npm init`.
+
+4. Install the required dependencies with `npm install`.
+
+5. Run the development server with `npm run dev`.
+
+## Contact Us
+
+If you have any questions, encounter issues, or just want to get in touch, please feel free to reach out to us via our Contact Form on the webshop.
+
+Happy shopping!

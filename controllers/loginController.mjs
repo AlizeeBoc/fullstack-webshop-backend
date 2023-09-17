@@ -2,8 +2,6 @@ import bcrypt from "bcrypt";
 import User from "../Models/User.mjs";
 import jwt from "jsonwebtoken"
 
-
-
 const loginUser = async (req, role, res) => {
     const { email, password } = req.body
     try {

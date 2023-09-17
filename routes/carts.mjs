@@ -6,6 +6,10 @@ import cookieParser from "cookie-parser"
 import { v4 as uuidv4 } from "uuid"
 import Stripe from "stripe"
 import bodyParser from "body-parser"
+import dotenv from "dotenv"
+dotenv.config()
+import authenticateUser from "../middleware/authenticateUser.mjs"
+import checkRole from "../middleware/checkRole.mjs"
 
 const router = express()
 
@@ -16,7 +20,7 @@ const cart = {}
 router.use(cookieParser())
 router.use(
   session({
-    secret: "webshop1234", // This should be hidden and saved as a key in heroku, right?
+    secret: process.env.SESSION_SECRET, 
     resave: false, //don't save the session if not modified
     saveUninitialized: true, //Save new session that have been modified
     cookie: { secure: false }, //cookie settings are not secured, for the sake of development(false)
@@ -93,7 +97,7 @@ router.post("/order", async (req, res) => {
   }
 })
 
-//*---------- Tentative  de stripe checkout session ----------*//
+//*---------- -----------------------  Stripe checkout session ---------------------------------*//
 
 const YOUR_DOMAIN = "http://localhost:4242"
 
@@ -109,7 +113,8 @@ router.post("/create-checkout-session", async (req, res) => {
       return res.status(400).json({ message: "Cart is empty" })
     }
 
-
+    // Extract customer details from the request body
+    const { firstname, lastname, email, address } = req.body
 
     // Create line_items based on the items in the cart
     const line_items = cartItems.map((cartItem) => ({
@@ -123,6 +128,19 @@ router.post("/create-checkout-session", async (req, res) => {
       quantity: cartItem.quantity,
     }))
 
+    //// Add a fixed shipping fee of 12 euros
+    line_items.push({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: "Shipping Fee",
+        },
+        unit_amount: 1200,
+      },
+      quantity: 1,
+    })
+
+    // Create a Stripe session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card", "paypal"],
       line_items,
@@ -130,7 +148,6 @@ router.post("/create-checkout-session", async (req, res) => {
       success_url: `${YOUR_DOMAIN}?success=true`, //create a succes payment page
       cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     })
-    const { firstname, lastname, email, address } = req.body
 
     //create order items based on the cart items
     const orderItems = cartItems.map((cartItem) => ({
@@ -144,117 +161,82 @@ router.post("/create-checkout-session", async (req, res) => {
     }))
     console.log("log of orderItems :", orderItems)
 
-    //Total price (total amount of cart + shipping)
-    const sumTotal = (arr) =>
-      arr.reduce(
-        (sum, { totalPrice, quantity }) => sum + totalPrice * quantity,
-        0
-      )
-
-      const total = sumTotal(cartItems)
-    //const cartTotal = sumTotal(cartItems)
-    //const shippingFee = 15.0
-    //const total = cartTotal + shippingFee
-    console.log("Go checkout : ", total)
-
-    // Create a new Order instance and save it to the database
     const order = new Order({
       status: "waiting for payment", //initializing payment status
       firstname,
       lastname,
       email,
       address,
-      items: [...orderItems],
+      status: "en attente de paiement",
+      items: cartItems.map((cartItem) => ({
+        product: cartItem.reference,
+        quantity: cartItem.quantity,
+        chest: cartItem.chest,
+        waist: cartItem.waist,
+        hips: cartItem.hips,
+        price: cartItem.price,
+        totalPrice: cartItem.totalPrice,
+      })),
     })
-
-    console.log("log of Order :", order)
-
+    
+    //And save them in the database
     await order.save()
-  
+
     req.session.cartItems = cartItems
     console.log(session.url)
     res.redirect(303, session.url)
+
   } catch (error) {
     console.error("Error creating checkout session:", error)
     res.status(500).json({ message: "Internal server error" })
   }
 })
-//
 
-/*---------------------------- Get request to retrieve cart items of the user ---------------------------*/
-router.get("/", async (req, res) => {
+
+router.get('/orders', authenticateUser, checkRole(["admin"]), async (req, res)=> {
   try {
-    const orderId = req.session.orderId
-    console.log("Retrieved orderId from session:", orderId)
-
-    const userCartItems = cart[orderId] || []
-
-    console.log("Fetched cart items:", userCartItems)
-
-    res.json(userCartItems)
-  } catch (error) {
-    console.error("Error fetching cart:", error)
-    res.status(500).json({ message: "Internal server error" })
+    const orders = await Order.find()
+    res.json(orders)
+  } catch (err) {
+    console.error("Error while retrieving orders :", err)
+    res.status(500).json({ error: "Server error"})
   }
 })
 
-/*------------------------------- Post request to checkout and place an order  ---------------------------*/
-router.post("/order/checkout", async (req, res) => {
+router.get('/orders/:orderId', authenticateUser, checkRole(["admin"]), async (req, res) => {
   try {
-    const orderId = req.session.orderId
-    const cartItems = req.session.cartItems || []
-    console.log("Generated orderId:", orderId)
+    const _id = req.params.orderId
+    const order = await Order.find({ _id })
 
-    if (cartItems.length === 0) {
-      return res.status(400).json({ message: "Cart is empty" })
+    if (!order) {
+      res.status(404).json({ error: 'Order not found'})
     }
 
-    // Extract order details from the request body
-    const { firstname, lastname, email, address } = req.body
-
-    //create order items based on the cart items
-    const orderItems = cartItems.map((cartItem) => ({
-      product: cartItem.reference,
-      quantity: cartItem.quantity,
-      chest: cartItem.chest,
-      waist: cartItem.waist,
-      hips: cartItem.hips,
-      price: cartItem.price,
-      totalPrice: cartItem.totalPrice,
-    }))
-    console.log("log of orderItems :", orderItems)
-
-    //Total price (total amount of cart + shipping)
-    const sumTotal = (arr) =>
-      arr.reduce(
-        (sum, { totalPrice, quantity }) => sum + totalPrice * quantity,
-        0
-      )
-    const cartTotal = sumTotal(cartItems)
-    const shippingFee = 15.0
-    const total = cartTotal + shippingFee
-    console.log("Go checkout : ", total)
-
-    // Create a new Order instance and save it to the database
-    const order = new Order({
-      firstname,
-      lastname,
-      email,
-      address,
-      items: [...orderItems],
-    })
-
-    console.log("log of Order :", order)
-
-    await order.save()
-    // Clear the user's cart after successful checkout
-    req.session.cartItems = []
-    //res.redirect('/success')
-    res.status(201).json({ message: "Order placed successfully" })
-  } catch (error) {
-    console.error("Error placing order:", error)
-    res.status(500).json({ message: "Internal server error" })
+    res.json(order)
+  } catch (err) {
+    console.error('Error while retrieving the order')
+    res.status(500).json( { error: "Order not found"})
   }
+})
+
+
+
+
+/*---------------------------- Get request to retrieve cart items of the user ---------------------------*/
+router.get("/", async (req, res) => {
+ try {
+   const orderId = req.session.orderId
+   console.log("Retrieved orderId from session:", orderId)
+
+   const userCartItems = cart[orderId] || []
+
+   console.log("Fetched cart items:", userCartItems)
+
+   res.json(userCartItems)
+ } catch (error) {
+   console.error("Error fetching cart:", error)
+   res.status(500).json({ message: "Internal server error" })
+ }
 })
 
 /*------------------------------ stripe webhook ------------------------------------------*/
@@ -296,5 +278,4 @@ router.post("/stripe-webhook/:orderId", bodyParser.raw({type: 'application/json'
 
 export default router
 
-//npm install express express-session cookie-parser
-//npm install uuid
+
