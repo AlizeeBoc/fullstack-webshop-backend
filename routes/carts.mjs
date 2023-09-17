@@ -162,12 +162,11 @@ router.post("/create-checkout-session", async (req, res) => {
     console.log("log of orderItems :", orderItems)
 
     const order = new Order({
-      status: "waiting for payment", //initializing payment status
       firstname,
       lastname,
       email,
       address,
-      status: "en attente de paiement",
+      status: "en attente de paiement", //initializing payment status
       items: cartItems.map((cartItem) => ({
         product: cartItem.reference,
         quantity: cartItem.quantity,
@@ -240,9 +239,9 @@ router.get("/", async (req, res) => {
 })
 
 /*------------------------------ stripe webhook ------------------------------------------*/
-router.post("/stripe-webhook/:orderId", bodyParser.raw({type: 'application/json'}), async(req, res) => {
+router.post("/stripe-webhook", bodyParser.raw({type: 'application/json'}), async(req, res) => {
   const event = req.body
-  const orderId = req.params.orderId
+  const orderId = req.body.orderId
 
 
   switch(event.type) {
@@ -252,7 +251,7 @@ router.post("/stripe-webhook/:orderId", bodyParser.raw({type: 'application/json'
       // Update the order status to "payment success"
       await Order.updateOne({ _id: orderId }, 
         { status: "payment success" })
-
+        console.log(orderId)
         console.log("payment was successful")
         console.log("log of order:", Order)
     break;

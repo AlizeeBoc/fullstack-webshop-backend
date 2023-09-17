@@ -10,7 +10,7 @@ const auth = {
     }
 };
 
-const transporter = nodemailer.createTransport(mailGun(auth));
+// const transporter = nodemailer.createTransport(mailGun(auth));
 
 export const sendContactEmail = async (req, res) => {
     const { email, subject, content } = req.body;
