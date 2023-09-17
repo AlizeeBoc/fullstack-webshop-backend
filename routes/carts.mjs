@@ -5,6 +5,7 @@ import session from "express-session"
 import cookieParser from "cookie-parser"
 import { v4 as uuidv4 } from "uuid"
 import Stripe from "stripe"
+import bodyParser from "body-parser"
 import dotenv from "dotenv"
 dotenv.config()
 import authenticateUser from "../middleware/authenticateUser.mjs"
@@ -96,7 +97,7 @@ router.post("/order", async (req, res) => {
   }
 })
 
-// -----------------------  Stripe checkout session -----------------------//
+//*---------- -----------------------  Stripe checkout session ---------------------------------*//
 
 const YOUR_DOMAIN = "http://localhost:4242"
 
@@ -144,7 +145,7 @@ router.post("/create-checkout-session", async (req, res) => {
       payment_method_types: ["card", "paypal"],
       line_items,
       mode: "payment",
-      success_url: `${YOUR_DOMAIN}?succes=true`, //create a succes payment page
+      success_url: `${YOUR_DOMAIN}?success=true`, //create a succes payment page
       cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     })
 
@@ -165,7 +166,7 @@ router.post("/create-checkout-session", async (req, res) => {
       lastname,
       email,
       address,
-      status: "en attente de paiement",
+      status: "en attente de paiement", //initializing payment status
       items: cartItems.map((cartItem) => ({
         product: cartItem.reference,
         quantity: cartItem.quantity,
@@ -217,9 +218,6 @@ router.get('/orders/:orderId', authenticateUser, checkRole(["admin"]), async (re
   }
 })
 
-
-
-
 /*---------------------------- Get request to retrieve cart items of the user ---------------------------*/
 router.get("/", async (req, res) => {
   try {
@@ -236,6 +234,42 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: "Internal server error" })
   }
 })
+
+
+/*------------------------------ stripe webhook ------------------------------------------*/
+// router.post("/stripe-webhook", bodyParser.raw({type: 'application/json'}), async(req, res) => {
+//   const event = req.body
+//   const orderId = req.body.orderId
+
+
+//   switch(event.type) {
+//     case 'payment_intent.succeeded':
+//       // const paymentIntent = event.data.object
+
+//       // Update the order status to "payment success"
+//       await Order.updateOne({ _id: orderId }, 
+//         { status: "payment success" })
+//         console.log(orderId)
+//         console.log("payment was successful")
+//         console.log("log of order:", Order)
+//     break;
+
+//     case 'payment_intent.payment_failed':
+//       // Update the order status to "payment success"
+//       await Order.updateOne({ _id: orderId }, 
+//         { status: "payment failed" })
+
+//         console.log("payment failed")
+//     break;
+
+//     default:
+//       console.log(`unhandled event type ${event.type}`)
+    
+//   }
+
+//   res.json({received: true})
+
+// })
 
 
 export default router
