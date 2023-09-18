@@ -8,7 +8,7 @@ Welcome to the Custom Leather Clothing Webshop API! This API powers our webshop,
 
 ## API Documentation
 
-For detailed information on how to use the API, please refer to our [API Documentation](https://crimson-crater-276374.postman.co/workspace/5e67af77-fa64-4c9c-8282-f8fa16227a78/folder/28778050-4d4c2c3e-87fc-4d0e-a4c4-7154c04de37c?ctx=documentation).
+For detailed information on how to use the API, please refer to our [API Documentation](https://documenter.getpostman.com/view/28778050/2s9YC7UBxT).
 
 ## Deployment
 
